@@ -51,6 +51,8 @@ Global:
    * `fortigate_current_sessions`
  * _System/HAChecksums_
    * `fortigate_ha_member_has_role`
+ * _System/HaPeer_
+   * `fortigate_ha_peer_priority`
  * _License/Status_
    * `fortigate_license_vdom_usage`
    * `fortigate_license_vdom_max`
@@ -414,6 +416,7 @@ To improve security, limit permissions to required ones only (least privilege pr
 |System/AvailableCertificates | *any*              |api/v2/monitor/system/available-certificates |
 |System/Fortimanager/Status   | sysgrp.cfg         |api/v2/monitor/system/fortimanager/status |
 |System/HAStatistics          | sysgrp.cfg         |api/v2/monitor/system/ha-statistics<br>api/v2/cmdb/system/ha |
+|System/Ha-peer               | sysgrp.cfg         |api/v2/monitor/system/ha-peer |
 |System/Interface             | netgrp.cfg         |api/v2/monitor/system/interface/select |
 |System/LinkMonitor           | sysgrp.cfg         |api/v2/monitor/system/link-monitor |
 |System/Resource/Usage        | sysgrp.cfg         |api/v2/monitor/system/resource/usage |
