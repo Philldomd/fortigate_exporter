@@ -146,6 +146,7 @@ func (p *ProbeCollector) Probe(ctx context.Context, target map[string]string, hc
 		{"System/Interface", probeSystemInterface},
 		{"System/LinkMonitor", probeSystemLinkMonitor},
 		{"System/Resource/Usage", probeSystemResourceUsage},
+		{"System/Sandbox/Status", probeSystemSandboxStatus},
 		{"System/SDNConnector", probeSystemSDNConnector},
 		{"System/SensorInfo", probeSystemSensorInfo},
 		{"System/Status", probeSystemStatus},

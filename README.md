@@ -51,6 +51,8 @@ Global:
    * `fortigate_current_sessions`
  * _System/HAChecksums_
    * `fortigate_ha_member_has_role`
+ * _System/Sandbox/Status_
+   * `fortigate_system_sandbox_status_signatures_count`
  * _License/Status_
    * `fortigate_license_vdom_usage`
    * `fortigate_license_vdom_max`
@@ -419,6 +421,7 @@ To improve security, limit permissions to required ones only (least privilege pr
 |System/Resource/Usage        | sysgrp.cfg         |api/v2/monitor/system/resource/usage |
 |System/SensorInfo            | sysgrp.cfg         |api/v2/monitor/system/sensor-info |
 |System/Status                | *any*              |api/v2/monitor/system/status |
+|System/Sandbox/Status        | sysgrp.cfg         |api/v2/monitor/system/sandbox/status |
 |System/Time/Clock            | sysgrp.cfg         |api/v2/monitor/system/time |
 |System/VDOMResources         | sysgrp.cfg         |api/v2/monitor/system/resource/usage |
 |User/Fsso                    | authgrp            |api/v2/monitor/user/fsso |
