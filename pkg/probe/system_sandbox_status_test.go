@@ -32,7 +32,7 @@ func TestSandboxStatus(t *testing.T) {
 	em := `
 	# HELP fortigate_system_sandbox_status_signatures_count The number of signatures that have been loaded on the FortiSandbox.
 	# TYPE fortigate_system_sandbox_status_signatures_count gauge
-	fortigate_system_sandbox_status_signatures_count{cloud_region="string",configured="true",malware_package_version="string",server="string",signatures_loaded="true",type="cloud"} 12
+	fortigate_system_sandbox_status_signatures_count{cloud_region="",configured="true",malware_package_version="5.125",server="0.0.0.0",signatures_loaded="false",type="appliance",vdom="root"} 0
 	`
 
 	if err := testutil.GatherAndCompare(r, strings.NewReader(em)); err != nil {
