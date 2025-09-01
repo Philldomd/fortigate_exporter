@@ -26,7 +26,7 @@ func probeSystemSandboxStatus (c http.FortiHTTP, meta *TargetMetadata) ([]promet
 		Count = prometheus.NewDesc(
 			"fortigate_system_sandbox_status_signatures_count",
 			"The number of signatures that have been loaded on the FortiSandbox.",
-			[]string{"configured", "type", "cloud_region", "server", "malware_package_version", "signatures_loaded"}, nil,
+			[]string{"configured", "type", "cloud_region", "server", "malware_package_version", "signatures_loaded", "vdom"}, nil,
 		)
 	)
 
@@ -42,6 +42,7 @@ func probeSystemSandboxStatus (c http.FortiHTTP, meta *TargetMetadata) ([]promet
 
 	type SystemSandboxStatusResult struct {
 		Result SystemSandboxStatus `json:"results"`
+		VDOM   string              `json: "vdom"`
 	}
 
 	var res SystemSandboxStatusResult
@@ -59,7 +60,8 @@ func probeSystemSandboxStatus (c http.FortiHTTP, meta *TargetMetadata) ([]promet
 		res.Result.Cloud,
 		res.Result.Server,
 		res.Result.MPV,
-		strconv.FormatBool(res.Result.Loaded)),
+		strconv.FormatBool(res.Result.Loaded),
+		res.VDOM),
 	)
 	return m, true
 }
