@@ -42,7 +42,7 @@ func probeSystemSandboxStatus (c http.FortiHTTP, meta *TargetMetadata) ([]promet
 
 	type SystemSandboxStatusResult struct {
 		Result SystemSandboxStatus `json:"results"`
-		VDOM   string              `json: "vdom"`
+		VDOM   string              `json:"vdom"`
 	}
 
 	var res SystemSandboxStatusResult
