@@ -15,42 +15,57 @@ package probe
 
 import (
 	"log"
+	"strconv"
 
 	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-func probeSystemSandboxStatus(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
+func probeSystemSandboxStatus (c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
 	var (
-		signatureCount = prometheus.NewDesc(
-			"fortigate_sandbox_status_signature_count",
-			"Sandbox signature counts",
-			[]string{"server", "region", "version", "type"}, nil,
+		Count = prometheus.NewDesc(
+			"fortigate_system_sandbox_status_signatures_count",
+			"The number of signatures that have been loaded on the FortiSandbox.",
+			[]string{"configured", "type", "cloud_region", "server", "malware_package_version", "signatures_loaded", "vdom"}, nil,
 		)
 	)
 
 	type SystemSandboxStatus struct {
-		Server  string  `json:"server"`
-		Type    string  `json:"type"`
-		Region  string  `json:"cloud_region"`
-		Version string  `json:"malware_package_version"`
-		Count   float64 `json:"signatures_count"`
+		Configured bool    `json:"configured"`
+		Type       string  `json:"type"`
+		Cloud      string  `json:"cloud_region"`
+		Server     string  `json:"server"`
+		MPV        string  `json:"malware_package_version"`
+		Loaded     bool    `json:"signatures_loaded"`
+		Count      float64 `json:"signatures_count"`
 	}
 
 	type SystemSandboxStatusResult struct {
-		Results []SystemSandboxStatus `json:"results"`
+		Result SystemSandboxStatus `json:"results"`
+		VDOM   string              `json:"vdom"`
 	}
 
 	var res SystemSandboxStatusResult
-	if err := c.Get("api/v2/monitor/system/sandbox/status","", &res); err != nil {
+	if err := c.Get("api/v2/monitor/system/sandbox/status", "", &res); err != nil {
 		log.Printf("Warning: %v", err)
 		return nil, false
 	}
-
 	m := []prometheus.Metric{}
-	for _, r := range res.Results {
-		m = append(m, prometheus.MustNewConstMetric(signatureCount, prometheus.GaugeValue, r.Count, r.Server, r.Region, r.Version, r.Type))
+	cloude := "null"
+	if res.Result.Cloud != "" {
+		cloude = res.Result.Cloud
 	}
-
+	m = append(m, prometheus.MustNewConstMetric(
+		Count,
+		prometheus.GaugeValue,
+		res.Result.Count,
+		strconv.FormatBool(res.Result.Configured),
+		res.Result.Type,
+		cloude,
+		res.Result.Server,
+		res.Result.MPV,
+		strconv.FormatBool(res.Result.Loaded),
+		res.VDOM),
+	)
 	return m, true
 }

@@ -1,23 +1,20 @@
-# api/v2/monitor/system/sandbox/status
 {
   "http_method":"GET",
-  "results":[
-      {
-        "configured": true,
-        "type": "cloud",
-        "cloud_region": "Sweden",
-        "server": "127.0.0.1",
-        "malware_package_version": "v17.0.3",
-        "signatures_loaded": true,
-        "signatures_count": 252891
-      }
-  ],
-  "vdom":"google",
+  "results": {
+    "configured":true,
+    "type":"appliance",
+    "cloud_region":"",
+    "server":"0.0.0.0",
+    "malware_package_version":"5.125",
+    "signatures_loaded":false,
+    "signatures_count":0
+  },
+  "vdom":"root",
   "path":"system",
-  "name":"sdn-connector",
+  "name":"sandbox",
   "action":"status",
   "status":"success",
-  "serial":"FGABCDEF12345678",
-  "version":"v7.0.9",
-  "build":444
+  "serial":"g43sags54rh5es",
+  "version":"v7.4.8",
+  "build":2795
 }

@@ -21,7 +21,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/testutil"
 )
 
-func TestSystemSandboxStatus(t *testing.T) {
+func TestSandboxStatus(t *testing.T) {
 	c := newFakeClient()
 	c.prepare("api/v2/monitor/system/sandbox/status", "testdata/system-sandbox-status.jsonnet")
 	r := prometheus.NewPedanticRegistry()
@@ -30,9 +30,9 @@ func TestSystemSandboxStatus(t *testing.T) {
 	}
 
 	em := `
-	# HELP fortigate_sandbox_status_signature_count Sandbox signature counts
-	# TYPE fortigate_sandbox_status_signature_count gauge
-	fortigate_sandbox_status_signature_count{region="Sweden",server="127.0.0.1",type="cloud",version="v17.0.3"} 252891
+	# HELP fortigate_system_sandbox_status_signatures_count The number of signatures that have been loaded on the FortiSandbox.
+	# TYPE fortigate_system_sandbox_status_signatures_count gauge
+	fortigate_system_sandbox_status_signatures_count{cloud_region="null",configured="true",malware_package_version="5.125",server="0.0.0.0",signatures_loaded="false",type="appliance",vdom="root"} 0
 	`
 
 	if err := testutil.GatherAndCompare(r, strings.NewReader(em)); err != nil {
