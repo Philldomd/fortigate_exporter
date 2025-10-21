@@ -23,7 +23,7 @@ import (
 func probeSystemInterfaceTransceivers(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
 	var (
 		interfaceTransceivers = prometheus.NewDesc(
-			"fortigate_inteface_transceivers",
+			"fortigate_inteface_transceivers_info",
 			"Interface transceivers information",
 			[]string{"interface", "type", "vendor", "vendorpartnumber", "vendorserialnumber"}, nil,
 		)

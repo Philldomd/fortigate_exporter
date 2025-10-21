@@ -92,7 +92,7 @@ Per-VDOM:
    * `fortigate_interface_transmit_errors_total`
    * `fortigate_interface_receive_errors_total`
  * _System/Interface/Transceivers_
-   * `fortigate_inteface_transceivers`
+   * `fortigate_inteface_transceivers_info`
  * _System/SDNConnector_
    * `fortigate_system_sdn_connector_status`
    * `fortigate_system_sdn_connector_last_update_seconds`
