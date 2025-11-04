@@ -60,12 +60,12 @@ Global:
  * _System/Sandbox_
    * `fortigate_sandbox_status_signature_count`
    * `fortigate_sandbox_connection_status`
-   * `fortigate_sandbox_stats_clean`
-   * `fortigate_sandbox_stats_detected`
-   * `fortigate_sandbox_stats_risk_high`
-   * `fortigate_sandbox_stats_risk_medium`
-   * `fortigate_sandbox_stats_risk_low`
-   * `fortigate_sandbox_stats_submitted`
+   * `fortigate_sandbox_stats_clean_total`
+   * `fortigate_sandbox_stats_detected_total`
+   * `fortigate_sandbox_stats_risk_high_total`
+   * `fortigate_sandbox_stats_risk_medium_total`
+   * `fortigate_sandbox_stats_risk_low_total`
+   * `fortigate_sandbox_stats_submitted_total`
 
 Per-VDOM:
 
