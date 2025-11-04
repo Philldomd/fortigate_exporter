@@ -30,24 +30,24 @@ func TestSystemSandboxStats(t *testing.T) {
 	}
 
 	em := `
-	# HELP fortigate_sandbox_stats_clean Number of clean files
-	# TYPE fortigate_sandbox_stats_clean counter
-	fortigate_sandbox_stats_clean 45120
-	# HELP fortigate_sandbox_stats_detected Number of detected files
-	# TYPE fortigate_sandbox_stats_detected counter
-	fortigate_sandbox_stats_detected 10
-	# HELP fortigate_sandbox_stats_risk_high Number of high risk files detected
-	# TYPE fortigate_sandbox_stats_risk_high counter
-	fortigate_sandbox_stats_risk_high 5
-	# HELP fortigate_sandbox_stats_risk_low Number of low risk files detected
-	# TYPE fortigate_sandbox_stats_risk_low counter
-	fortigate_sandbox_stats_risk_low 3
-	# HELP fortigate_sandbox_stats_risk_medium Number of medium risk files detected
-	# TYPE fortigate_sandbox_stats_risk_medium counter
-	fortigate_sandbox_stats_risk_medium 2
-	# HELP fortigate_sandbox_stats_submitted Number of submitted files
-	# TYPE fortigate_sandbox_stats_submitted counter
-	fortigate_sandbox_stats_submitted 45130
+	# HELP fortigate_sandbox_stats_clean_total Number of clean files
+	# TYPE fortigate_sandbox_stats_clean_total counter
+	fortigate_sandbox_stats_clean_total 45120
+	# HELP fortigate_sandbox_stats_detected_total Number of detected files
+	# TYPE fortigate_sandbox_stats_detected_total counter
+	fortigate_sandbox_stats_detected_total 10
+	# HELP fortigate_sandbox_stats_risk_high_total Number of high risk files detected
+	# TYPE fortigate_sandbox_stats_risk_high_total counter
+	fortigate_sandbox_stats_risk_high_total 5
+	# HELP fortigate_sandbox_stats_risk_low_total Number of low risk files detected
+	# TYPE fortigate_sandbox_stats_risk_low_total counter
+	fortigate_sandbox_stats_risk_low_total 3
+	# HELP fortigate_sandbox_stats_risk_medium_total Number of medium risk files detected
+	# TYPE fortigate_sandbox_stats_risk_medium_total counter
+	fortigate_sandbox_stats_risk_medium_total 2
+	# HELP fortigate_sandbox_stats_submitted_total Number of submitted files
+	# TYPE fortigate_sandbox_stats_submitted_total counter
+	fortigate_sandbox_stats_submitted_total 45130
 	`
 
 	if err := testutil.GatherAndCompare(r, strings.NewReader(em)); err != nil {

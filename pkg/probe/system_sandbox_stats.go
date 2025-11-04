@@ -23,32 +23,32 @@ import (
 func probeSystemSandboxStats (c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
 	var (
 		numberDetected = prometheus.NewDesc(
-			"fortigate_sandbox_stats_detected",
+			"fortigate_sandbox_stats_detected_total",
 			"Number of detected files",
 			[]string{}, nil,
 		)
 		numberClean = prometheus.NewDesc(
-			"fortigate_sandbox_stats_clean",
+			"fortigate_sandbox_stats_clean_total",
 			"Number of clean files",
 			[]string{}, nil,
 		)
 		numberRiskLow = prometheus.NewDesc(
-			"fortigate_sandbox_stats_risk_low",
+			"fortigate_sandbox_stats_risk_low_total",
 			"Number of low risk files detected",
 			[]string{}, nil,
 		)
 		numberRiskMedium = prometheus.NewDesc(
-			"fortigate_sandbox_stats_risk_medium",
+			"fortigate_sandbox_stats_risk_medium_total",
 			"Number of medium risk files detected",
 			[]string{}, nil,
 		)
 		numberRiskHigh = prometheus.NewDesc(
-			"fortigate_sandbox_stats_risk_high",
+			"fortigate_sandbox_stats_risk_high_total",
 			"Number of high risk files detected",
 			[]string{}, nil,
 		)
 		numberSubmitted = prometheus.NewDesc(
-			"fortigate_sandbox_stats_submitted",
+			"fortigate_sandbox_stats_submitted_total",
 			"Number of submitted files",
 			[]string{}, nil,
 		)

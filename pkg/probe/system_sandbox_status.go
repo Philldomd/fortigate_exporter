@@ -51,9 +51,9 @@ func probeSystemSandboxStatus (c http.FortiHTTP, meta *TargetMetadata) ([]promet
 		return nil, false
 	}
 	m := []prometheus.Metric{}
-	cloude := "null"
+	cloud := "null"
 	if res.Result.Cloud != "" {
-		cloude = res.Result.Cloud
+		cloud = res.Result.Cloud
 	}
 	m = append(m, prometheus.MustNewConstMetric(
 		Count,
@@ -61,7 +61,7 @@ func probeSystemSandboxStatus (c http.FortiHTTP, meta *TargetMetadata) ([]promet
 		res.Result.Count,
 		strconv.FormatBool(res.Result.Configured),
 		res.Result.Type,
-		cloude,
+		cloud,
 		res.Result.Server,
 		res.Result.MPV,
 		strconv.FormatBool(res.Result.Loaded),
