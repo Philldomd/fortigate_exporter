@@ -17,12 +17,12 @@ func TestSystemInterfaceTransceivers(t *testing.T) {
 	}
 
 	em := `
-	# HELP fortigate_inteface_transceivers Interface transceivers information
-	# TYPE fortigate_inteface_transceivers gauge
-	fortigate_inteface_transceivers{interface="ha1",type="SFP/SFP+/SFP28",vendor="FORTINET",vendorpartnumber="FTL",vendorserialnumber="U00000"} 1
-	fortigate_inteface_transceivers{interface="ha2",type="SFP/SFP+/SFP28",vendor="FORTINET",vendorpartnumber="FTL",vendorserialnumber="U00000"} 1
-	fortigate_inteface_transceivers{interface="port33",type="QSFP/QSFP+",vendor="FORTINET",vendorpartnumber="FTL",vendorserialnumber="U00000"} 1
-	fortigate_inteface_transceivers{interface="port34",type="QSFP/QSFP+",vendor="FORTINET",vendorpartnumber="FTL",vendorserialnumber="U00000"} 1
+	# HELP fortigate_inteface_transceivers_info Interface transceivers information
+	# TYPE fortigate_inteface_transceivers_info gauge
+	fortigate_inteface_transceivers_info{interface="ha1",type="SFP/SFP+/SFP28",vendor="FORTINET",vendorpartnumber="FTL",vendorserialnumber="U00000"} 1
+	fortigate_inteface_transceivers_info{interface="ha2",type="SFP/SFP+/SFP28",vendor="FORTINET",vendorpartnumber="FTL",vendorserialnumber="U00000"} 1
+	fortigate_inteface_transceivers_info{interface="port33",type="QSFP/QSFP+",vendor="FORTINET",vendorpartnumber="FTL",vendorserialnumber="U00000"} 1
+	fortigate_inteface_transceivers_info{interface="port34",type="QSFP/QSFP+",vendor="FORTINET",vendorpartnumber="FTL",vendorserialnumber="U00000"} 1
 	`
 
 	if err := testutil.GatherAndCompare(r, strings.NewReader(em)); err != nil {
