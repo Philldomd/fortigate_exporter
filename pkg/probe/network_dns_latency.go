@@ -23,13 +23,13 @@ import (
 func probeNetworkDnsLatency(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
 	var (
 		dnsLatency = prometheus.NewDesc(
-			"fortigate_network_dns_latency",
+			"fortigate_network_dns_latency_seconds",
 			"Network dns latency",
 			[]string{"service", "ip"}, nil,
 		)
 		dnsLastUpdate = prometheus.NewDesc(
 			"fortigate_network_dns_latest_update",
-			"Network dns last update",
+			"Network dns last record update",
 			[]string{"service", "ip"}, nil,
 		)
 	)
@@ -52,7 +52,7 @@ func probeNetworkDnsLatency(c http.FortiHTTP, meta *TargetMetadata) ([]prometheu
 	}
 	m := []prometheus.Metric{}
 	for _, r := range res.Results {
-		m = append(m, prometheus.MustNewConstMetric(dnsLatency, prometheus.GaugeValue, r.Latency, r.Service, r.Ip))
+		m = append(m, prometheus.MustNewConstMetric(dnsLatency, prometheus.GaugeValue, r.Latency * 0.001, r.Service, r.Ip))
 		m = append(m, prometheus.MustNewConstMetric(dnsLastUpdate, prometheus.GaugeValue, r.LastUpdate, r.Service, r.Ip))
 	}
 

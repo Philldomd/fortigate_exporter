@@ -29,10 +29,10 @@ func TestNetworkDnsLatency(t *testing.T) {
 	}
 
 	em := `
-	# HELP fortigate_network_dns_latency Network dns latency
-	# TYPE fortigate_network_dns_latency gauge
-	fortigate_network_dns_latency{ip="8.8.8.8",service="dns_server"} 10
-	# HELP fortigate_network_dns_latest_update Network dns last update
+	# HELP fortigate_network_dns_latency_seconds Network dns latency
+	# TYPE fortigate_network_dns_latency_seconds gauge
+	fortigate_network_dns_latency_seconds{ip="8.8.8.8",service="dns_server"} 0.01
+	# HELP fortigate_network_dns_latest_update Network dns last record update
 	# TYPE fortigate_network_dns_latest_update gauge
 	fortigate_network_dns_latest_update{ip="8.8.8.8",service="dns_server"} 1040
 	`
