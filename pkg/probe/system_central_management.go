@@ -25,7 +25,7 @@ func probeSystemCentralManagementStatus (c http.FortiHTTP, meta *TargetMetadata)
 	var (
 		mode = prometheus.NewDesc(
 			"fortigate_system_central_management_mode",
-			"Operating mode of the central management. (Normal = 1, Backup = 2)",
+			"Operating mode of the central management. (Normal = 1, Backup = 0)",
 			[]string{"server", "mgmt_ip", "mgmt_port", "sn", "pendfortman"}, nil,
 		)
 		status = prometheus.NewDesc(
@@ -35,7 +35,7 @@ func probeSystemCentralManagementStatus (c http.FortiHTTP, meta *TargetMetadata)
 		)
 		registration_status = prometheus.NewDesc(
 			"fortigate_system_central_management_registration_status",
-			"Status of the registration from FortiGate to the central management server. (unknown = -1, in_progress = 1, registered = 0, unregistered = 2)",
+			"Status of the registration from FortiGate to the central management server. (unknown = -1, in_progress = 2, registered = 1, unregistered = 0)",
 			[]string{"server", "mgmt_ip", "mgmt_port", "sn", "pendfortman"}, nil,
 		)
 	)
@@ -65,7 +65,7 @@ func probeSystemCentralManagementStatus (c http.FortiHTTP, meta *TargetMetadata)
     if res.Result.Mode == "normal" {
 		m = append(m, prometheus.MustNewConstMetric(mode, prometheus.GaugeValue, 1, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
 	} else {
-		m = append(m, prometheus.MustNewConstMetric(mode, prometheus.GaugeValue, 2, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+		m = append(m, prometheus.MustNewConstMetric(mode, prometheus.GaugeValue, 0, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
 	}
 	switch res.Result.Status {
 	case "down":
@@ -77,11 +77,11 @@ func probeSystemCentralManagementStatus (c http.FortiHTTP, meta *TargetMetadata)
 	}
 	switch res.Result.RegStat {
 	case "in_progress":
-		m = append(m, prometheus.MustNewConstMetric(registration_status, prometheus.GaugeValue, 1, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
-	case "registered":
-		m = append(m, prometheus.MustNewConstMetric(registration_status, prometheus.GaugeValue, 0, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
-	case "unregistered":
 		m = append(m, prometheus.MustNewConstMetric(registration_status, prometheus.GaugeValue, 2, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	case "registered":
+		m = append(m, prometheus.MustNewConstMetric(registration_status, prometheus.GaugeValue, 1, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	case "unregistered":
+		m = append(m, prometheus.MustNewConstMetric(registration_status, prometheus.GaugeValue, 0, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
 	default:
 		m = append(m, prometheus.MustNewConstMetric(registration_status, prometheus.GaugeValue, -1, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
 	}
