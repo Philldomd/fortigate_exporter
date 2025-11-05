@@ -50,20 +50,20 @@ Global:
    * `fortigate_memory_usage_ratio`
    * `fortigate_current_sessions`
  * _System/Performance/status/_
-   * `fortigate_system_performance_status_cpu_cores_idle`
-   * `fortigate_system_performance_status_cpu_cores_iowait`
-   * `fortigate_system_performance_status_cpu_cores_nice`
-   * `fortigate_system_performance_status_cpu_cores_system`
-   * `fortigate_system_performance_status_cpu_cores_user`
-   * `fortigate_system_performance_status_cpu_idle`
-   * `fortigate_system_performance_status_cpu_iowait`
-   * `fortigate_system_performance_status_cpu_nice`
-   * `fortigate_system_performance_status_cpu_system`
-   * `fortigate_system_performance_status_cpu_user`
-   * `fortigate_system_performance_status_mem_free`
-   * `fortigate_system_performance_status_mem_freeable`
-   * `fortigate_system_performance_status_mem_total`
-   * `fortigate_system_performance_status_mem_used`
+   * `fortigate_system_performance_status_cpu_cores_idle_ratio`
+   * `fortigate_system_performance_status_cpu_cores_iowait_ratio`
+   * `fortigate_system_performance_status_cpu_cores_nice_ratio`
+   * `fortigate_system_performance_status_cpu_cores_system_ratio`
+   * `fortigate_system_performance_status_cpu_cores_user_ratio`
+   * `fortigate_system_performance_status_cpu_idle_ratio`
+   * `fortigate_system_performance_status_cpu_iowait_ratio`
+   * `fortigate_system_performance_status_cpu_nice_ratio`
+   * `fortigate_system_performance_status_cpu_system_ratio`
+   * `fortigate_system_performance_status_cpu_user_ratio`
+   * `fortigate_system_performance_status_mem_free_bytes`
+   * `fortigate_system_performance_status_mem_freeable_bytes`
+   * `fortigate_system_performance_status_mem_bytes_total`
+   * `fortigate_system_performance_status_mem_used_bytes`
  * _System/HAChecksums_
    * `fortigate_ha_member_has_role`
  * _License/Status_
