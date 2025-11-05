@@ -24,72 +24,72 @@ import (
 func probeSystemPerformanceStatus(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
 	var (
 		cpuCoresUser = prometheus.NewDesc(
-			"fortigate_system_performance_status_cpu_cores_user",
+			"fortigate_system_performance_status_cpu_cores_user_ratio",
 			"Percentage of CPU utilization that occurred at the user level.",
 			[]string{"label", "vdom"}, nil,
 		)
 		cpuCoresSystem = prometheus.NewDesc(
-			"fortigate_system_performance_status_cpu_cores_system",
+			"fortigate_system_performance_status_cpu_cores_system_ratio",
 			"Percentage of CPU utilization that occurred while executing at the system level.",
 			[]string{"label", "vdom"}, nil,
 		)
 		cpuCoresNice = prometheus.NewDesc(
-			"fortigate_system_performance_status_cpu_cores_nice",
+			"fortigate_system_performance_status_cpu_cores_nice_ratio",
 			"Percentage of CPU utilization that occurred while executing at the user level with nice priority.",
 			[]string{"label", "vdom"}, nil,
 		)
 		cpuCoresIdle = prometheus.NewDesc(
-			"fortigate_system_performance_status_cpu_cores_idle",
+			"fortigate_system_performance_status_cpu_cores_idle_ratio",
 			"Percentage of time that the CPU was idle and the system did not have an outstanding disk I/O request.",
 			[]string{"label", "vdom"}, nil,
 		)
 		cpuCoresIowait = prometheus.NewDesc(
-			"fortigate_system_performance_status_cpu_cores_iowait",
+			"fortigate_system_performance_status_cpu_cores_iowait_ratio",
 			"Percentage of time that the CPU was idle during which the system had an outstanding disk I/O request.",
 			[]string{"label", "vdom"}, nil,
 		)
 		cpuUser = prometheus.NewDesc(
-			"fortigate_system_performance_status_cpu_user",
+			"fortigate_system_performance_status_cpu_user_ratio",
 			"Percentage of CPU utilization that occurred at the user level.",
 			[]string{"vdom"}, nil,
 		)
 		cpuSystem = prometheus.NewDesc(
-			"fortigate_system_performance_status_cpu_system",
+			"fortigate_system_performance_status_cpu_system_ratio",
 			"Percentage of CPU utilization that occurred while executing at the system level.",
 			[]string{"vdom"}, nil,
 		)
 		cpuNice = prometheus.NewDesc(
-			"fortigate_system_performance_status_cpu_nice",
+			"fortigate_system_performance_status_cpu_nice_ratio",
 			"Percentage of CPU utilization that occurred while executing at the user level with nice priority.",
 			[]string{"vdom"}, nil,
 		)
 		cpuIdle = prometheus.NewDesc(
-			"fortigate_system_performance_status_cpu_idle",
+			"fortigate_system_performance_status_cpu_idle_ratio",
 			"Percentage of time that the CPU or CPUs were idle and the system did not have an outstanding disk I/O request.",
 			[]string{"vdom"}, nil,
 		)
 		cpuIowait = prometheus.NewDesc(
-			"fortigate_system_performance_status_cpu_iowait",
+			"fortigate_system_performance_status_cpu_iowait_ratio",
 			"Percentage of time that the CPU or CPUs were idle during which the system had an outstanding disk I/O request.",
 			[]string{"vdom"}, nil,
 		)
 		memTotal = prometheus.NewDesc(
-			"fortigate_system_performance_status_mem_total",
+			"fortigate_system_performance_status_mem_bytes_total",
 			"All the installed memory in RAM, in bytes.",
 			[]string{"vdom"}, nil,
 		)
 		memUsed = prometheus.NewDesc(
-			"fortigate_system_performance_status_mem_used",
+			"fortigate_system_performance_status_mem_used_bytes",
 			"Memory are being used, in bytes.",
 			[]string{"vdom"}, nil,
 		)
 		memFree = prometheus.NewDesc(
-			"fortigate_system_performance_status_mem_free",
+			"fortigate_system_performance_status_mem_free_bytes",
 			"All the memory in RAM that is not being used for anything (even caches), in bytes.",
 			[]string{"vdom"}, nil,
 		)
 		memFreeable = prometheus.NewDesc(
-			"fortigate_system_performance_status_mem_freeable",
+			"fortigate_system_performance_status_mem_freeable_bytes",
 			"Freeable buffers/caches memory, in bytes.",
 			[]string{"vdom"}, nil,
 		)
@@ -138,17 +138,17 @@ func probeSystemPerformanceStatus(c http.FortiHTTP, meta *TargetMetadata) ([]pro
 	var core_num string
 	for i, core := range res.Results.Cpu.Cores {
 		core_num = "core_" + strconv.Itoa(i)
-		m = append(m, prometheus.MustNewConstMetric(cpuCoresUser, prometheus.GaugeValue, float64(core.User), core_num, res.VDOM))
-		m = append(m, prometheus.MustNewConstMetric(cpuCoresSystem, prometheus.GaugeValue, float64(core.System), core_num, res.VDOM))
-		m = append(m, prometheus.MustNewConstMetric(cpuCoresNice, prometheus.GaugeValue, float64(core.Nice), core_num, res.VDOM))
-		m = append(m, prometheus.MustNewConstMetric(cpuCoresIdle, prometheus.GaugeValue, float64(core.Idle), core_num, res.VDOM))
-		m = append(m, prometheus.MustNewConstMetric(cpuCoresIowait, prometheus.GaugeValue, float64(core.Iowait), core_num, res.VDOM))
+		m = append(m, prometheus.MustNewConstMetric(cpuCoresUser, prometheus.GaugeValue, float64(core.User) * 0.01, core_num, res.VDOM))
+		m = append(m, prometheus.MustNewConstMetric(cpuCoresSystem, prometheus.GaugeValue, float64(core.System) * 0.01, core_num, res.VDOM))
+		m = append(m, prometheus.MustNewConstMetric(cpuCoresNice, prometheus.GaugeValue, float64(core.Nice) * 0.01, core_num, res.VDOM))
+		m = append(m, prometheus.MustNewConstMetric(cpuCoresIdle, prometheus.GaugeValue, float64(core.Idle) * 0.01, core_num, res.VDOM))
+		m = append(m, prometheus.MustNewConstMetric(cpuCoresIowait, prometheus.GaugeValue, float64(core.Iowait) * 0.01, core_num, res.VDOM))
 	}
-	m = append(m, prometheus.MustNewConstMetric(cpuUser,prometheus.GaugeValue, float64(res.Results.Cpu.User), res.VDOM))
-	m = append(m, prometheus.MustNewConstMetric(cpuSystem,prometheus.GaugeValue, float64(res.Results.Cpu.System), res.VDOM))
-	m = append(m, prometheus.MustNewConstMetric(cpuNice,prometheus.GaugeValue, float64(res.Results.Cpu.Nice), res.VDOM))
-	m = append(m, prometheus.MustNewConstMetric(cpuIdle,prometheus.GaugeValue, float64(res.Results.Cpu.Idle), res.VDOM))
-	m = append(m, prometheus.MustNewConstMetric(cpuIowait,prometheus.GaugeValue, float64(res.Results.Cpu.Iowait), res.VDOM))
+	m = append(m, prometheus.MustNewConstMetric(cpuUser,prometheus.GaugeValue, float64(res.Results.Cpu.User) * 0.01, res.VDOM))
+	m = append(m, prometheus.MustNewConstMetric(cpuSystem,prometheus.GaugeValue, float64(res.Results.Cpu.System) * 0.01, res.VDOM))
+	m = append(m, prometheus.MustNewConstMetric(cpuNice,prometheus.GaugeValue, float64(res.Results.Cpu.Nice) * 0.01, res.VDOM))
+	m = append(m, prometheus.MustNewConstMetric(cpuIdle,prometheus.GaugeValue, float64(res.Results.Cpu.Idle) * 0.01, res.VDOM))
+	m = append(m, prometheus.MustNewConstMetric(cpuIowait,prometheus.GaugeValue, float64(res.Results.Cpu.Iowait) * 0.01, res.VDOM))
 	m = append(m, prometheus.MustNewConstMetric(memTotal,prometheus.GaugeValue, float64(res.Results.Mem.Total), res.VDOM))
 	m = append(m, prometheus.MustNewConstMetric(memUsed,prometheus.GaugeValue, float64(res.Results.Mem.Used), res.VDOM))
 	m = append(m, prometheus.MustNewConstMetric(memFree,prometheus.GaugeValue, float64(res.Results.Mem.Free), res.VDOM))
