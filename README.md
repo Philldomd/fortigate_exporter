@@ -52,12 +52,12 @@ Global:
  * _System/HAChecksums_
    * `fortigate_ha_member_has_role`
  * _System/Ntp/Status_
-   * `fortigate_system_ntp_delay`
-   * `fortigate_system_ntp_dispersion`
-   * `fortigate_system_ntp_dispersion_peer`
-   * `fortigate_system_ntp_expires`
-   * `fortigate_system_ntp_offset`
-   * `fortigate_system_ntp_reftime`
+   * `fortigate_system_ntp_delay_seconds`
+   * `fortigate_system_ntp_dispersion_seconds`
+   * `fortigate_system_ntp_dispersion_peer_seconds`
+   * `fortigate_system_ntp_expires_seconds`
+   * `fortigate_system_ntp_offset_seconds`
+   * `fortigate_system_ntp_reftime_seconds`
    * `fortigate_system_ntp_stratum`
  * _License/Status_
    * `fortigate_license_vdom_usage`

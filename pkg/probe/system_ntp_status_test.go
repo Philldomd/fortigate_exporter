@@ -33,54 +33,54 @@ func TestSystemNtpStatus_7_4_0(t *testing.T) {
 		t.Errorf("probeSystemNtpStatus() returned non-success")
 	}
 
-	em := `# HELP fortigate_system_ntp_delay NTP round trip delay, in milliseconds
-	# TYPE fortigate_system_ntp_delay gauge
-	fortigate_system_ntp_delay{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="google",version="1035"} 324
-	fortigate_system_ntp_delay{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="vdomtest",version="1035"} 324
-	fortigate_system_ntp_delay{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="google",version="1035"} 324
-	fortigate_system_ntp_delay{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="vdomtest",version="1035"} 324
-	fortigate_system_ntp_delay{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="google",version="1035"} 324
-	fortigate_system_ntp_delay{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="vdomtest",version="1035"} 324
-	# HELP fortigate_system_ntp_dispersion NTP dispersion to primary clock, in milliseconds
-	# TYPE fortigate_system_ntp_dispersion gauge
-	fortigate_system_ntp_dispersion{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="google",version="1035"} 342
-	fortigate_system_ntp_dispersion{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="vdomtest",version="1035"} 342
-	fortigate_system_ntp_dispersion{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="google",version="1035"} 342
-	fortigate_system_ntp_dispersion{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="vdomtest",version="1035"} 342
-	fortigate_system_ntp_dispersion{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="google",version="1035"} 342
-	fortigate_system_ntp_dispersion{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="vdomtest",version="1035"} 342
-	# HELP fortigate_system_ntp_dispersion_peer NTP peer dispersion, in milliseconds
-	# TYPE fortigate_system_ntp_dispersion_peer gauge
-	fortigate_system_ntp_dispersion_peer{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="google",version="1035"} 123
-	fortigate_system_ntp_dispersion_peer{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="vdomtest",version="1035"} 123
-	fortigate_system_ntp_dispersion_peer{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="google",version="1035"} 123
-	fortigate_system_ntp_dispersion_peer{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="vdomtest",version="1035"} 123
-	fortigate_system_ntp_dispersion_peer{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="google",version="1035"} 123
-	fortigate_system_ntp_dispersion_peer{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="vdomtest",version="1035"} 123
-	# HELP fortigate_system_ntp_expires NTP expire time, in seconds
-	# TYPE fortigate_system_ntp_expires gauge
-	fortigate_system_ntp_expires{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="google",version="1035"} 145438
-	fortigate_system_ntp_expires{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="vdomtest",version="1035"} 145438
-	fortigate_system_ntp_expires{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="google",version="1035"} 124438
-	fortigate_system_ntp_expires{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="vdomtest",version="1035"} 124438
-	fortigate_system_ntp_expires{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="google",version="1035"} 245438
-	fortigate_system_ntp_expires{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="vdomtest",version="1035"} 245438
-	# HELP fortigate_system_ntp_offset NTP combined offset, in milliseconds
-	# TYPE fortigate_system_ntp_offset gauge
-	fortigate_system_ntp_offset{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="google",version="1035"} 5482
-	fortigate_system_ntp_offset{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="vdomtest",version="1035"} 5482
-	fortigate_system_ntp_offset{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="google",version="1035"} 5482
-	fortigate_system_ntp_offset{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="vdomtest",version="1035"} 5482
-	fortigate_system_ntp_offset{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="google",version="1035"} 5482
-	fortigate_system_ntp_offset{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="vdomtest",version="1035"} 5482
-	# HELP fortigate_system_ntp_reftime NTP reftime in epoch seconds
-	# TYPE fortigate_system_ntp_reftime counter
-	fortigate_system_ntp_reftime{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="google",version="1035"} 85742
-	fortigate_system_ntp_reftime{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="vdomtest",version="1035"} 85742
-	fortigate_system_ntp_reftime{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="google",version="1035"} 85742
-	fortigate_system_ntp_reftime{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="vdomtest",version="1035"} 85742
-	fortigate_system_ntp_reftime{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="google",version="1035"} 85742
-	fortigate_system_ntp_reftime{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="vdomtest",version="1035"} 85742
+	em := `# HELP fortigate_system_ntp_delay_seconds NTP round trip delay, in seconds
+	# TYPE fortigate_system_ntp_delay_seconds gauge
+	fortigate_system_ntp_delay_seconds{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="google",version="1035"} 0.324
+	fortigate_system_ntp_delay_seconds{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="vdomtest",version="1035"} 0.324
+	fortigate_system_ntp_delay_seconds{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="google",version="1035"} 0.324
+	fortigate_system_ntp_delay_seconds{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="vdomtest",version="1035"} 0.324
+	fortigate_system_ntp_delay_seconds{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="google",version="1035"} 0.324
+	fortigate_system_ntp_delay_seconds{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="vdomtest",version="1035"} 0.324
+	# HELP fortigate_system_ntp_dispersion_seconds NTP dispersion to primary clock, in seconds
+	# TYPE fortigate_system_ntp_dispersion_seconds gauge
+	fortigate_system_ntp_dispersion_seconds{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="google",version="1035"} 0.342
+	fortigate_system_ntp_dispersion_seconds{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="vdomtest",version="1035"} 0.342
+	fortigate_system_ntp_dispersion_seconds{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="google",version="1035"} 0.342
+	fortigate_system_ntp_dispersion_seconds{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="vdomtest",version="1035"} 0.342
+	fortigate_system_ntp_dispersion_seconds{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="google",version="1035"} 0.342
+	fortigate_system_ntp_dispersion_seconds{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="vdomtest",version="1035"} 0.342
+	# HELP fortigate_system_ntp_dispersion_peer_seconds NTP peer dispersion, in seconds
+	# TYPE fortigate_system_ntp_dispersion_peer_seconds gauge
+	fortigate_system_ntp_dispersion_peer_seconds{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="google",version="1035"} 0.123
+	fortigate_system_ntp_dispersion_peer_seconds{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="vdomtest",version="1035"} 0.123
+	fortigate_system_ntp_dispersion_peer_seconds{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="google",version="1035"} 0.123
+	fortigate_system_ntp_dispersion_peer_seconds{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="vdomtest",version="1035"} 0.123
+	fortigate_system_ntp_dispersion_peer_seconds{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="google",version="1035"} 0.123
+	fortigate_system_ntp_dispersion_peer_seconds{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="vdomtest",version="1035"} 0.123
+	# HELP fortigate_system_ntp_expires_seconds NTP expire time, in seconds
+	# TYPE fortigate_system_ntp_expires_seconds gauge
+	fortigate_system_ntp_expires_seconds{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="google",version="1035"} 145438
+	fortigate_system_ntp_expires_seconds{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="vdomtest",version="1035"} 145438
+	fortigate_system_ntp_expires_seconds{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="google",version="1035"} 124438
+	fortigate_system_ntp_expires_seconds{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="vdomtest",version="1035"} 124438
+	fortigate_system_ntp_expires_seconds{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="google",version="1035"} 245438
+	fortigate_system_ntp_expires_seconds{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="vdomtest",version="1035"} 245438
+	# HELP fortigate_system_ntp_offset_seconds NTP combined offset, in seconds
+	# TYPE fortigate_system_ntp_offset_seconds gauge
+	fortigate_system_ntp_offset_seconds{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="google",version="1035"} 5.482
+	fortigate_system_ntp_offset_seconds{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="vdomtest",version="1035"} 5.482
+	fortigate_system_ntp_offset_seconds{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="google",version="1035"} 5.482
+	fortigate_system_ntp_offset_seconds{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="vdomtest",version="1035"} 5.482
+	fortigate_system_ntp_offset_seconds{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="google",version="1035"} 5.482
+	fortigate_system_ntp_offset_seconds{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="vdomtest",version="1035"} 5.482
+	# HELP fortigate_system_ntp_reftime_seconds NTP reftime in epoch seconds
+	# TYPE fortigate_system_ntp_reftime_seconds counter
+	fortigate_system_ntp_reftime_seconds{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="google",version="1035"} 85742
+	fortigate_system_ntp_reftime_seconds{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="vdomtest",version="1035"} 85742
+	fortigate_system_ntp_reftime_seconds{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="google",version="1035"} 85742
+	fortigate_system_ntp_reftime_seconds{ip="127.0.0.2",reachable="false",selected="false",server="HA-CAP",vdom="vdomtest",version="1035"} 85742
+	fortigate_system_ntp_reftime_seconds{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="google",version="1035"} 85742
+	fortigate_system_ntp_reftime_seconds{ip="127.0.0.3",reachable="true",selected="true",server="HA-CODE",vdom="vdomtest",version="1035"} 85742
 	# HELP fortigate_system_ntp_stratum NTP stratum value
 	# TYPE fortigate_system_ntp_stratum gauge
 	fortigate_system_ntp_stratum{ip="127.0.0.1",reachable="true",selected="true",server="HA-TEST",vdom="google",version="1035"} 3
