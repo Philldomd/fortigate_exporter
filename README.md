@@ -38,9 +38,11 @@ Supported metrics right now as follows.
 Global:
 
  * _System/SensorInfo_
+   * `fortigate_sensor_alarm_status`
    * `fortigate_sensor_fan_rpm`
    * `fortigate_sensor_temperature_celsius`
    * `fortigate_sensor_voltage_volts`
+   * `fortigate_sensor_thresholds`
  * _System/Status_
    * `fortigate_version_info`
  * _System/Transceivers_
@@ -53,6 +55,14 @@ Global:
    * `fortigate_current_sessions`
  * _System/HAChecksums_
    * `fortigate_ha_member_has_role`
+ * _System/Ntp/Status_
+   * `fortigate_system_ntp_delay_seconds`
+   * `fortigate_system_ntp_dispersion_seconds`
+   * `fortigate_system_ntp_dispersion_peer_seconds`
+   * `fortigate_system_ntp_expires_seconds`
+   * `fortigate_system_ntp_offset_seconds`
+   * `fortigate_system_ntp_reftime_seconds`
+   * `fortigate_system_ntp_stratum`
  * _License/Status_
    * `fortigate_license_vdom_usage`
    * `fortigate_license_vdom_max`
@@ -421,6 +431,7 @@ To improve security, limit permissions to required ones only (least privilege pr
 |System/Interface             | netgrp.cfg         |api/v2/monitor/system/interface/select |
 |System/Interface/Transceivers| *any*              |api/v2/monitor/system/interface/transceivers |
 |System/LinkMonitor           | sysgrp.cfg         |api/v2/monitor/system/link-monitor |
+|System/Ntp/Status            | netgrp.cfg         |api/v2/monitor/system/ntp/status |
 |System/Resource/Usage        | sysgrp.cfg         |api/v2/monitor/system/resource/usage |
 |System/SensorInfo            | sysgrp.cfg         |api/v2/monitor/system/sensor-info |
 |System/Status                | *any*              |api/v2/monitor/system/status |
