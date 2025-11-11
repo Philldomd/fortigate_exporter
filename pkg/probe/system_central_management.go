@@ -33,7 +33,7 @@ func probeSystemCentralManagementStatus (c http.FortiHTTP, meta *TargetMetadata)
 			"Status of the connection from FortiGate to the central management server. (down = 0, up = 1, handshake = 2)",
 			[]string{"server", "mgmt_ip", "mgmt_port", "sn", "pendfortman"}, nil,
 		)
-		registration_status = prometheus.NewDesc(
+		registrationStatus = prometheus.NewDesc(
 			"fortigate_system_central_management_registration_status",
 			"Status of the registration from FortiGate to the central management server. (unknown = -1, in_progress = 2, registered = 1, unregistered = 0)",
 			[]string{"server", "mgmt_ip", "mgmt_port", "sn", "pendfortman"}, nil,
