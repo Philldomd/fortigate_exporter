@@ -24,7 +24,7 @@ import (
 func probeSystemSandboxStatus (c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
 	var (
 		Count = prometheus.NewDesc(
-			"fortigate_system_sandbox_status_signatures_count",
+			"fortigate_system_sandbox_status_signatures",
 			"The number of signatures that have been loaded on the FortiSandbox.",
 			[]string{"configured", "type", "cloud_region", "server", "malware_package_version", "signatures_loaded", "vdom"}, nil,
 		)
