@@ -67,7 +67,7 @@ func (p *ProbeCollector) Probe(ctx context.Context, target map[string]string, hc
 	}
 
 	if tgt.Scheme != "https" && tgt.Scheme != "http" {
-		return false, fmt.Errorf("Unsupported scheme %q", tgt.Scheme)
+		return false, fmt.Errorf("unsupported scheme %q", tgt.Scheme)
 	}
 
 	// Filter anything else than scheme and hostname
@@ -145,7 +145,9 @@ func (p *ProbeCollector) Probe(ctx context.Context, target map[string]string, hc
 		{"System/HAStatistics", probeSystemHAStatistics},
 		{"System/Ha-peer", probeSystemHaPeer},
 		{"System/Interface", probeSystemInterface},
+		{"System/Interface/Transceivers", probeSystemInterfaceTransceivers},
 		{"System/LinkMonitor", probeSystemLinkMonitor},
+		{"System/Ntp/Status", probeSystemNtpStatus},
 		{"System/Resource/Usage", probeSystemResourceUsage},
 		{"System/SDNConnector", probeSystemSDNConnector},
 		{"System/SensorInfo", probeSystemSensorInfo},
