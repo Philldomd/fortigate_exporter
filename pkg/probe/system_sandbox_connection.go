@@ -25,7 +25,7 @@ func probeSystemSandboxConnection(c http.FortiHTTP, meta *TargetMetadata) ([]pro
 		connectionStatus = prometheus.NewDesc(
 			"fortigate_sandbox_connection_status",
 			"Sandbox connection status, (unreachable=0, reachable=1, disabled=-1)",
-			[]string{"type"}, nil,
+			[]string{"sandbox_type"}, nil,
 		)
 	)
 
