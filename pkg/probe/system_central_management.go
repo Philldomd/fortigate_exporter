@@ -25,18 +25,18 @@ func probeSystemCentralManagementStatus (c http.FortiHTTP, meta *TargetMetadata)
 	var (
 		mode = prometheus.NewDesc(
 			"fortigate_system_central_management_mode",
-			"Operating mode of the central management. (Normal = 1, Backup = 0)",
-			[]string{"server", "mgmt_ip", "mgmt_port", "sn", "pendfortman"}, nil,
+			"Operating mode of the central management.",
+			[]string{"mode", "server", "mgmt_ip", "mgmt_port", "sn", "pendfortman"}, nil,
 		)
 		status = prometheus.NewDesc(
 			"fortigate_system_central_management_status",
-			"Status of the connection from FortiGate to the central management server. (down = 0, up = 1, handshake = 2)",
-			[]string{"server", "mgmt_ip", "mgmt_port", "sn", "pendfortman"}, nil,
+			"Status of the connection from FortiGate to the central management server.",
+			[]string{"status", "server", "mgmt_ip", "mgmt_port", "sn", "pendfortman"}, nil,
 		)
 		registrationStatus = prometheus.NewDesc(
 			"fortigate_system_central_management_registration_status",
-			"Status of the registration from FortiGate to the central management server. (unknown = -1, in_progress = 2, registered = 1, unregistered = 0)",
-			[]string{"server", "mgmt_ip", "mgmt_port", "sn", "pendfortman"}, nil,
+			"Status of the registration from FortiGate to the central management server.",
+			[]string{"status", "server", "mgmt_ip", "mgmt_port", "sn", "pendfortman"}, nil,
 		)
 	)
 
@@ -62,28 +62,40 @@ func probeSystemCentralManagementStatus (c http.FortiHTTP, meta *TargetMetadata)
 	}
 
 	m := []prometheus.Metric{}
-    if res.Result.Mode == "normal" {
-		m = append(m, prometheus.MustNewConstMetric(mode, prometheus.GaugeValue, 1, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+  var normal, backup, down, up, handshake, inProgress, registered, unregistered, defaultValue float64
+	if res.Result.Mode == "normal" {
+		normal = 1
 	} else {
-		m = append(m, prometheus.MustNewConstMetric(mode, prometheus.GaugeValue, 0, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+		backup = 1
 	}
 	switch res.Result.Status {
 	case "down":
-		m = append(m, prometheus.MustNewConstMetric(status, prometheus.GaugeValue, 0, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+		down = 1
 	case "up":
-		m = append(m, prometheus.MustNewConstMetric(status, prometheus.GaugeValue, 1, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+		up = 1
 	case "handshake":
-		m = append(m, prometheus.MustNewConstMetric(status, prometheus.GaugeValue, 2, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+		handshake = 1
 	}
 	switch res.Result.RegStat {
 	case "in_progress":
-		m = append(m, prometheus.MustNewConstMetric(registration_status, prometheus.GaugeValue, 2, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+		inProgress = 1
 	case "registered":
-		m = append(m, prometheus.MustNewConstMetric(registration_status, prometheus.GaugeValue, 1, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+		registered = 1
 	case "unregistered":
-		m = append(m, prometheus.MustNewConstMetric(registration_status, prometheus.GaugeValue, 0, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+		unregistered = 1
 	default:
-		m = append(m, prometheus.MustNewConstMetric(registration_status, prometheus.GaugeValue, -1, res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+		defaultValue = 1
 	}
+	m = append(m, prometheus.MustNewConstMetric(mode, prometheus.GaugeValue, normal, "normal", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(mode, prometheus.GaugeValue, backup, "backup", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(status, prometheus.GaugeValue, down, "down", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(status, prometheus.GaugeValue, up, "up", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(status, prometheus.GaugeValue, handshake, "handshake", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(registrationStatus, prometheus.GaugeValue, inProgress, "inprogress", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(registrationStatus, prometheus.GaugeValue, registered, "registered", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(registrationStatus, prometheus.GaugeValue, unregistered, "unregistered", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(registrationStatus, prometheus.GaugeValue, defaultValue, "unknown", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	
+	
 	return m, true
 }

@@ -29,17 +29,22 @@ func TestSystemCentralManagementStatus(t *testing.T) {
 		t.Errorf("probeSystemCentralManagementStatus() returned non-success")
 	}
 
-	em := `
-	# HELP fortigate_system_central_management_mode Operating mode of the central management. (Normal = 1, Backup = 0)
-	# TYPE fortigate_system_central_management_mode gauge
-	fortigate_system_central_management_mode{mgmt_ip="127.0.0.1",mgmt_port="0",pendfortman="12.329845.45k3",server="HA-TEST",sn="121748"} 1
-	# HELP fortigate_system_central_management_registration_status Status of the registration from FortiGate to the central management server. (unknown = -1, in_progress = 2, registered = 1, unregistered = 0)
-	# TYPE fortigate_system_central_management_registration_status gauge
-	fortigate_system_central_management_registration_status{mgmt_ip="127.0.0.1",mgmt_port="0",pendfortman="12.329845.45k3",server="HA-TEST",sn="121748"} -1
-	# HELP fortigate_system_central_management_status Status of the connection from FortiGate to the central management server. (down = 0, up = 1, handshake = 2)
-	# TYPE fortigate_system_central_management_status gauge
-	fortigate_system_central_management_status{mgmt_ip="127.0.0.1",mgmt_port="0",pendfortman="12.329845.45k3",server="HA-TEST",sn="121748"} 0
-	`
+	em := `# HELP fortigate_system_central_management_mode Operating mode of the central management.
+# TYPE fortigate_system_central_management_mode gauge
+fortigate_system_central_management_mode{mgmt_ip="127.0.0.1",mgmt_port="0",mode="backup",pendfortman="12.329845.45k3",server="HA-TEST",sn="121748"} 0
+fortigate_system_central_management_mode{mgmt_ip="127.0.0.1",mgmt_port="0",mode="normal",pendfortman="12.329845.45k3",server="HA-TEST",sn="121748"} 1
+# HELP fortigate_system_central_management_registration_status Status of the registration from FortiGate to the central management server.
+# TYPE fortigate_system_central_management_registration_status gauge
+fortigate_system_central_management_registration_status{mgmt_ip="127.0.0.1",mgmt_port="0",pendfortman="12.329845.45k3",server="HA-TEST",sn="121748",status="inprogress"} 0
+fortigate_system_central_management_registration_status{mgmt_ip="127.0.0.1",mgmt_port="0",pendfortman="12.329845.45k3",server="HA-TEST",sn="121748",status="registered"} 0
+fortigate_system_central_management_registration_status{mgmt_ip="127.0.0.1",mgmt_port="0",pendfortman="12.329845.45k3",server="HA-TEST",sn="121748",status="unknown"} 1
+fortigate_system_central_management_registration_status{mgmt_ip="127.0.0.1",mgmt_port="0",pendfortman="12.329845.45k3",server="HA-TEST",sn="121748",status="unregistered"} 0
+# HELP fortigate_system_central_management_status Status of the connection from FortiGate to the central management server.
+# TYPE fortigate_system_central_management_status gauge
+fortigate_system_central_management_status{mgmt_ip="127.0.0.1",mgmt_port="0",pendfortman="12.329845.45k3",server="HA-TEST",sn="121748",status="down"} 1
+fortigate_system_central_management_status{mgmt_ip="127.0.0.1",mgmt_port="0",pendfortman="12.329845.45k3",server="HA-TEST",sn="121748",status="handshake"} 0
+fortigate_system_central_management_status{mgmt_ip="127.0.0.1",mgmt_port="0",pendfortman="12.329845.45k3",server="HA-TEST",sn="121748",status="up"} 0
+`
 
 	if err := testutil.GatherAndCompare(r, strings.NewReader(em)); err != nil {
 		t.Fatalf("metric compare: err %v", err)
