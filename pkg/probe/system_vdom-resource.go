@@ -24,17 +24,17 @@ func probeSystemVdomResource(c http.FortiHTTP, meta *TargetMetadata) ([]promethe
 	
 	vdomDesc := make(map[string]*prometheus.Desc)
 	vdomDesc["cpu"] = prometheus.NewDesc(
-		"fortigate_vdom_resource_cpu_usage",
+		"fortigate_vdom_resource_cpu_usage_ratio",
 		"Current VDOM CPU usage in percentage",
 		[]string{"vdom"}, nil,
 	)
 	vdomDesc["memory"] = prometheus.NewDesc(
-		"fortigate_vdom_resource_memory_usage",
+		"fortigate_vdom_resource_memory_usage_ratio",
 		"Current VDOM memory usage in percentage",
 		[]string{"vdom"}, nil,
 	)
 	vdomDesc["setup_rate"] = prometheus.NewDesc(
-		"fortigate_vdom_resource_setup_rate",
+		"fortigate_vdom_resource_setup_ratio",
 		"Current VDOM memory usage in percentage",
 		[]string{"vdom"}, nil,
 	)
@@ -89,7 +89,7 @@ func probeSystemVdomResource(c http.FortiHTTP, meta *TargetMetadata) ([]promethe
 		[]string{"vdom", "object"},nil,
 	)
 	vdomDesc["usage_percent"] = prometheus.NewDesc(
-		"fortigate_vdom_resource_object_usage_percentage",
+		"fortigate_vdom_resource_object_usage_ratio",
 		"Object Usage percentage",
 		[]string{"vdom", "object"},nil,
 	)

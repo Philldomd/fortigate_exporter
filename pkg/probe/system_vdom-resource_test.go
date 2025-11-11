@@ -30,18 +30,18 @@ func TestVdomResource(t *testing.T) {
 	}
 
 	em := `
-	# HELP fortigate_vdom_resource_cpu_usage Current VDOM CPU usage in percentage
-	# TYPE fortigate_vdom_resource_cpu_usage gauge
-	fortigate_vdom_resource_cpu_usage{vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_cpu_usage{vdom="kalle-test"} 0
+	# HELP fortigate_vdom_resource_cpu_usage_ratio Current VDOM CPU usage in percentage
+	# TYPE fortigate_vdom_resource_cpu_usage_ratio gauge
+	fortigate_vdom_resource_cpu_usage_ratio{vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_cpu_usage_ratio{vdom="kalle-test"} 0
 	# HELP fortigate_vdom_resource_deletable 1 if VDOM is deletable
 	# TYPE fortigate_vdom_resource_deletable gauge
 	fortigate_vdom_resource_deletable{vdom="gur-proddmzext"} 0
 	fortigate_vdom_resource_deletable{vdom="kalle-test"} 1
-	# HELP fortigate_vdom_resource_memory_usage Current VDOM memory usage in percentage
-	# TYPE fortigate_vdom_resource_memory_usage gauge
-	fortigate_vdom_resource_memory_usage{vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_memory_usage{vdom="kalle-test"} 0
+	# HELP fortigate_vdom_resource_memory_usage_ratio Current VDOM memory usage in percentage
+	# TYPE fortigate_vdom_resource_memory_usage_ratio gauge
+	fortigate_vdom_resource_memory_usage_ratio{vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_memory_usage_ratio{vdom="kalle-test"} 0
 	# HELP fortigate_vdom_resource_object_current_usage Object Current usage
 	# TYPE fortigate_vdom_resource_object_current_usage gauge
 	fortigate_vdom_resource_object_current_usage{object="custom-service",vdom="gur-proddmzext"} 87
@@ -384,48 +384,48 @@ func TestVdomResource(t *testing.T) {
 	fortigate_vdom_resource_object_id{object="user",vdom="kalle-test"} 13
 	fortigate_vdom_resource_object_id{object="user-group",vdom="gur-proddmzext"} 14
 	fortigate_vdom_resource_object_id{object="user-group",vdom="kalle-test"} 14
-	# HELP fortigate_vdom_resource_object_usage_percentage Object Usage percentage
-	# TYPE fortigate_vdom_resource_object_usage_percentage gauge
-	fortigate_vdom_resource_object_usage_percentage{object="custom-service",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="custom-service",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="dialup-tunnel",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="dialup-tunnel",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="firewall-address",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="firewall-address",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="firewall-addrgrp",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="firewall-addrgrp",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="firewall-policy",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="firewall-policy",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="ipsec-phase1",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="ipsec-phase1",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="ipsec-phase1-interface",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="ipsec-phase1-interface",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="ipsec-phase2",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="ipsec-phase2",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="ipsec-phase2-interface",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="ipsec-phase2-interface",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="log-disk-quota",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="log-disk-quota",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="onetime-schedule",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="onetime-schedule",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="proxy",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="proxy",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="recurring-schedule",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="recurring-schedule",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="service-group",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="service-group",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="session",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="session",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="sslvpn",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="sslvpn",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="user",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="user",vdom="kalle-test"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="user-group",vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_object_usage_percentage{object="user-group",vdom="kalle-test"} 0
-	# HELP fortigate_vdom_resource_setup_rate Current VDOM memory usage in percentage
-	# TYPE fortigate_vdom_resource_setup_rate gauge
-	fortigate_vdom_resource_setup_rate{vdom="gur-proddmzext"} 0
-	fortigate_vdom_resource_setup_rate{vdom="kalle-test"} 0
+	# HELP fortigate_vdom_resource_object_usage_ratio Object Usage percentage
+	# TYPE fortigate_vdom_resource_object_usage_ratio gauge
+	fortigate_vdom_resource_object_usage_ratio{object="custom-service",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="custom-service",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="dialup-tunnel",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="dialup-tunnel",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="firewall-address",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="firewall-address",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="firewall-addrgrp",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="firewall-addrgrp",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="firewall-policy",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="firewall-policy",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="ipsec-phase1",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="ipsec-phase1",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="ipsec-phase1-interface",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="ipsec-phase1-interface",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="ipsec-phase2",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="ipsec-phase2",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="ipsec-phase2-interface",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="ipsec-phase2-interface",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="log-disk-quota",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="log-disk-quota",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="onetime-schedule",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="onetime-schedule",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="proxy",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="proxy",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="recurring-schedule",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="recurring-schedule",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="service-group",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="service-group",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="session",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="session",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="sslvpn",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="sslvpn",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="user",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="user",vdom="kalle-test"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="user-group",vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_object_usage_ratio{object="user-group",vdom="kalle-test"} 0
+	# HELP fortigate_vdom_resource_setup_ratio Current VDOM memory usage in percentage
+	# TYPE fortigate_vdom_resource_setup_ratio gauge
+	fortigate_vdom_resource_setup_ratio{vdom="gur-proddmzext"} 0
+	fortigate_vdom_resource_setup_ratio{vdom="kalle-test"} 0
 	`
 
 	if err := testutil.GatherAndCompare(r, strings.NewReader(em)); err != nil {
