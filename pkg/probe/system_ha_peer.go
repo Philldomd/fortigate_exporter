@@ -25,7 +25,7 @@ func probeSystemHaPeer (c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Me
 	var (
 		Priority = prometheus.NewDesc(
 			"fortigate_ha_peer",
-			"True when the peer device is the HA primary.(true=1, false=0)",
+			"True when the peer device is the HA primary.",
 			[]string{"serial","vcluster","hostname","master","primary","priority"}, nil,
 		)
 	)
@@ -52,9 +52,11 @@ func probeSystemHaPeer (c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Me
 	for _, r := range res.Result {
 		if meta.VersionMajor >= 7 && meta.VersionMinor >= 4 {
 			if (r.Primary) {
-				m = append(m, prometheus.MustNewConstMetric(Priority, prometheus.GaugeValue, 1, r.Serial, strconv.FormatInt(r.Vcluster, 10), r.Hostname, strconv.FormatBool(r.Master), strconv.FormatBool(r.Primary), strconv.FormatFloat(r.Priority, 'f', -1, 64)))
+				m = append(m, prometheus.MustNewConstMetric(Priority, prometheus.GaugeValue, 1, r.Serial, strconv.FormatInt(r.Vcluster, 10), r.Hostname, strconv.FormatBool(r.Master), "true", strconv.FormatFloat(r.Priority, 'f', -1, 64)))
+				m = append(m, prometheus.MustNewConstMetric(Priority, prometheus.GaugeValue, 0, r.Serial, strconv.FormatInt(r.Vcluster, 10), r.Hostname, strconv.FormatBool(r.Master), "false", strconv.FormatFloat(r.Priority, 'f', -1, 64)))
 			} else {
-				m = append(m, prometheus.MustNewConstMetric(Priority, prometheus.GaugeValue, 0, r.Serial, strconv.FormatInt(r.Vcluster, 10), r.Hostname, strconv.FormatBool(r.Master), strconv.FormatBool(r.Primary), strconv.FormatFloat(r.Priority, 'f', -1, 64)))
+				m = append(m, prometheus.MustNewConstMetric(Priority, prometheus.GaugeValue, 0, r.Serial, strconv.FormatInt(r.Vcluster, 10), r.Hostname, strconv.FormatBool(r.Master), "true", strconv.FormatFloat(r.Priority, 'f', -1, 64)))
+				m = append(m, prometheus.MustNewConstMetric(Priority, prometheus.GaugeValue, 1, r.Serial, strconv.FormatInt(r.Vcluster, 10), r.Hostname, strconv.FormatBool(r.Master), "false", strconv.FormatFloat(r.Priority, 'f', -1, 64)))
 			}
 		} else {
 			m = append(m, prometheus.MustNewConstMetric(Priority, prometheus.GaugeValue, -1, "None", "0", "None", "false", "Unsupported", "false"))
