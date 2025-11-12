@@ -64,17 +64,17 @@ func probeSystemVdomResource(c http.FortiHTTP, meta *TargetMetadata) ([]promethe
 		[]string{"vdom", "object"},nil,
 	)
 	vdomDesc["guaranteed"] = prometheus.NewDesc(
-		"fortigate_vdom_resource_object_guaranted",
-		"Object Guaranted",
+		"fortigate_vdom_resource_object_guaranteed",
+		"Object Guaranteed",
 		[]string{"vdom", "object"},nil,
 	)
 	vdomDesc["min_guaranteed_value"] = prometheus.NewDesc(
-		"fortigate_vdom_resource_object_guaranted_max_value",
+		"fortigate_vdom_resource_object_guaranteed_max_value",
 		"Object Minimum guaranteed value",
 		[]string{"vdom", "object"},nil,
 	)
 	vdomDesc["max_guaranteed_value"] = prometheus.NewDesc(
-		"fortigate_vdom_resource_object_guaranted_min_value",
+		"fortigate_vdom_resource_object_guaranteed_min_value",
 		"Object Maximum guaranteed value",
 		[]string{"vdom", "object"},nil,
 	)
