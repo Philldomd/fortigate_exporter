@@ -15,7 +15,6 @@ package probe
 
 import (
 	"log"
-
 	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -107,7 +106,7 @@ func probeSystemVdomResource(c http.FortiHTTP, meta *TargetMetadata) ([]promethe
 
 	m := []prometheus.Metric{}
 	for _, result := range res {
-		for k, elem := range result.Result.(map[string]interface{}) {
+		for k, elem := range result.Result.(map[string]any) {
 			switch k {
 			case "cpu", "memory", "setup_rate":
 				m = append(m, prometheus.MustNewConstMetric(vdomDesc[k], prometheus.GaugeValue, elem.(float64), result.Vdom))
@@ -135,7 +134,7 @@ func probeSystemVdomResource(c http.FortiHTTP, meta *TargetMetadata) ([]promethe
 			"sslvpn",
 			"proxy",
 			"log-disk-quota":
-				for val, e := range elem.(map[string]interface{}) {
+				for val, e := range elem.(map[string]any) {
 					m = append(m, prometheus.MustNewConstMetric(vdomDesc[val], prometheus.GaugeValue, e.(float64), result.Vdom, k))
 				}
 			default:

@@ -15,12 +15,11 @@ package probe
 
 import (
 	"log"
-
 	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-func probeNetworkDnsLatency(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
+func probeNetworkDNSLatency(c http.FortiHTTP, _ *TargetMetadata) ([]prometheus.Metric, bool) {
 	var (
 		dnsLatency = prometheus.NewDesc(
 			"fortigate_network_dns_latency_seconds",
@@ -29,25 +28,25 @@ func probeNetworkDnsLatency(c http.FortiHTTP, meta *TargetMetadata) ([]prometheu
 		)
 	)
 
-	type DnsLatencty struct {
+	type DNSLatencty struct {
 		Service    string  `json:"service"`
 		Latency    float64 `json:"latency"`
 		LastUpdate float64 `json:"last_update"`
-		Ip         string  `json:"ip"`
+		IP         string  `json:"ip"`
 	}
 
-	type DnsLatencyResult struct {
-		Results []DnsLatencty `json:"results"`
+	type DNSLatencyResult struct {
+		Results []DNSLatencty `json:"results"`
 	}
 
-	var res DnsLatencyResult
+	var res DNSLatencyResult
 	if err := c.Get("api/v2/monitor/network/dns/latency", "", &res); err != nil {
 		log.Printf("Warning: %v", err)
 		return nil, false
 	}
 	m := []prometheus.Metric{}
 	for _, r := range res.Results {
-		m = append(m, prometheus.MustNewConstMetric(dnsLatency, prometheus.GaugeValue, r.Latency * 0.001, r.Service, r.Ip))
+		m = append(m, prometheus.MustNewConstMetric(dnsLatency, prometheus.GaugeValue, r.Latency * 0.001, r.Service, r.IP))
 	}
 
 	return m, true
