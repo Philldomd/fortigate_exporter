@@ -39,7 +39,6 @@ Global:
 
  * _Network/Dns/Latency_
    * `fortigate_network_dns_latency_`
-   * `fortigate_network_dns_latest_update`
  * _System/SensorInfo_
    * `fortigate_sensor_alarm_status`
    * `fortigate_sensor_fan_rpm`
