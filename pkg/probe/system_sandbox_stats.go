@@ -16,11 +16,12 @@ package probe
 import (
 	"log"
 
-	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 	"github.com/prometheus/client_golang/prometheus"
+
+	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 )
 
-func probeSystemSandboxStats (c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
+func probeSystemSandboxStats(c http.FortiHTTP, _ *TargetMetadata) ([]prometheus.Metric, bool) {
 	var (
 		numberDetected = prometheus.NewDesc(
 			"fortigate_sandbox_stats_detected_total",
@@ -60,7 +61,7 @@ func probeSystemSandboxStats (c http.FortiHTTP, meta *TargetMetadata) ([]prometh
 		Low       float64 `json:"risk_low"`
 		Medium    float64 `json:"risk_med"`
 		High      float64 `json:"risk_high"`
-		Submitted float64 
+		Submitted float64
 	}
 
 	type SystemSandboxStatsResult struct {
@@ -68,11 +69,11 @@ func probeSystemSandboxStats (c http.FortiHTTP, meta *TargetMetadata) ([]prometh
 	}
 
 	var res SystemSandboxStatsResult
-	if err := c.Get("api/v2/monitor/system/sandbox/stats","", &res); err != nil {
+	if err := c.Get("api/v2/monitor/system/sandbox/stats", "", &res); err != nil {
 		log.Printf("Warning: %v", err)
 		return nil, false
 	}
-	var m = []prometheus.Metric{}
+	m := []prometheus.Metric{}
 
 	for _, r := range res.Results {
 		m = append(m, prometheus.MustNewConstMetric(numberDetected, prometheus.CounterValue, r.Detected))

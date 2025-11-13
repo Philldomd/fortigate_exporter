@@ -16,17 +16,16 @@ package probe
 import (
 	"log"
 
-	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 	"github.com/prometheus/client_golang/prometheus"
+
+	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 )
 
-func probeSystemSandboxConnection(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
-	var (
-		connectionStatus = prometheus.NewDesc(
-			"fortigate_sandbox_connection_status",
-			"Sandbox connection status, (unreachable=0, reachable=1, disabled=-1)",
-			[]string{"sandbox_type"}, nil,
-		)
+func probeSystemSandboxConnection(c http.FortiHTTP, _ *TargetMetadata) ([]prometheus.Metric, bool) {
+	connectionStatus := prometheus.NewDesc(
+		"fortigate_sandbox_connection_status",
+		"Sandbox connection status, (unreachable=0, reachable=1, disabled=-1)",
+		[]string{"sandbox_type"}, nil,
 	)
 
 	type SystemSandboxConnection struct {
@@ -38,14 +37,14 @@ func probeSystemSandboxConnection(c http.FortiHTTP, meta *TargetMetadata) ([]pro
 		Results []SystemSandboxConnection `json:"results"`
 	}
 	var res SystemSandboxConnectionResult
-	if err := c.Get("api/v2/monitor/system/sandbox/connection","", &res); err != nil {
+	if err := c.Get("api/v2/monitor/system/sandbox/connection", "", &res); err != nil {
 		log.Printf("Warning: %v", err)
 		return nil, false
 	}
 
 	m := []prometheus.Metric{}
 	for _, r := range res.Results {
-	switch r.Status {
+		switch r.Status {
 		case "unreachable":
 			m = append(m, prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, 0, r.Type))
 		case "reachable":
