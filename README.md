@@ -38,11 +38,15 @@ Supported metrics right now as follows.
 Global:
 
  * _System/SensorInfo_
+   * `fortigate_sensor_alarm_status`
    * `fortigate_sensor_fan_rpm`
    * `fortigate_sensor_temperature_celsius`
    * `fortigate_sensor_voltage_volts`
+   * `fortigate_sensor_thresholds`
  * _System/Status_
    * `fortigate_version_info`
+ * _System/Transceivers_
+   * `fortigate_interface_transceivers`
  * _System/Time/Clock_
    * `fortigate_time_seconds`
  * _System/Resource/Usage_
@@ -51,6 +55,14 @@ Global:
    * `fortigate_current_sessions`
  * _System/HAChecksums_
    * `fortigate_ha_member_has_role`
+ * _System/Ntp/Status_
+   * `fortigate_system_ntp_delay_seconds`
+   * `fortigate_system_ntp_dispersion_seconds`
+   * `fortigate_system_ntp_dispersion_peer_seconds`
+   * `fortigate_system_ntp_expires_seconds`
+   * `fortigate_system_ntp_offset_seconds`
+   * `fortigate_system_ntp_reftime_seconds`
+   * `fortigate_system_ntp_stratum`
  * _License/Status_
    * `fortigate_license_vdom_usage`
    * `fortigate_license_vdom_max`
@@ -60,7 +72,7 @@ Global:
 
 Per-VDOM:
 
- * _System/VDOMResources_
+ * _System/Resource/Usage/VDOM_
    * `fortigate_vdom_cpu_usage_ratio`
    * `fortigate_vdom_memory_usage_ratio`
    * `fortigate_vdom_current_sessions`
@@ -89,6 +101,8 @@ Per-VDOM:
    * `fortigate_interface_receive_bytes_total`
    * `fortigate_interface_transmit_errors_total`
    * `fortigate_interface_receive_errors_total`
+ * _System/Interface/Transceivers_
+   * `fortigate_inteface_transceivers_info`
  * _System/SDNConnector_
    * `fortigate_system_sdn_connector_status`
    * `fortigate_system_sdn_connector_last_update_seconds`
@@ -96,6 +110,21 @@ Per-VDOM:
    * `fortigate_system_central_management_mode`
    * `fortigate_system_central_management_status`
    * `fortigate_system_central_management_registration_status`
+ * _System/VDOMResource_
+   * `fortigate_vdom_resource_cpu_usage`
+   * `fortigate_vdom_resource_memory_usage`
+   * `fortigate_vdom_resource_setup_rate`
+   * `fortigate_vdom_resource_deletable`
+   * `fortigate_vdom_resource_object_id`
+   * `fortigate_vdom_resource_object_custom_max`
+   * `fortigate_vdom_resource_object_custom_min_value`
+   * `fortigate_vdom_resource_object_custom_max_value`
+   * `fortigate_vdom_resource_object_guaranted`
+   * `fortigate_vdom_resource_object_guaranted_max_value`
+   * `fortigate_vdom_resource_object_guaranted_min_value`
+   * `fortigate_vdom_resource_object_global_max`
+   * `fortigate_vdom_resource_object_current_usage`
+   * `fortigate_vdom_resource_object_usage_percentage`
  * _User/Fsso_
    * `fortigate_user_fsso_info`
  * _VPN/Ssl/Connections_
@@ -420,13 +449,16 @@ To improve security, limit permissions to required ones only (least privilege pr
 |System/Fortimanager/Status   | sysgrp.cfg         |api/v2/monitor/system/fortimanager/status |
 |System/HAStatistics          | sysgrp.cfg         |api/v2/monitor/system/ha-statistics<br>api/v2/cmdb/system/ha |
 |System/Interface             | netgrp.cfg         |api/v2/monitor/system/interface/select |
+|System/Interface/Transceivers| *any*              |api/v2/monitor/system/interface/transceivers |
 |System/LinkMonitor           | sysgrp.cfg         |api/v2/monitor/system/link-monitor |
 |System/Performance/Status    | sysgrp.cfg         |api/v2/monitor/system/performance/status |
+|System/Ntp/Status            | netgrp.cfg         |api/v2/monitor/system/ntp/status |
 |System/Resource/Usage        | sysgrp.cfg         |api/v2/monitor/system/resource/usage |
+|System/Resource/Usage/VDOM   | sysgrp.cfg         |api/v2/monitor/system/resource/usage |
 |System/SensorInfo            | sysgrp.cfg         |api/v2/monitor/system/sensor-info |
 |System/Status                | *any*              |api/v2/monitor/system/status |
 |System/Time/Clock            | sysgrp.cfg         |api/v2/monitor/system/time |
-|System/VDOMResources         | sysgrp.cfg         |api/v2/monitor/system/resource/usage |
+|System/System/VDOMResource   | sysgrp.cfg         |api/v2/monitor/system/vdom-resource |
 |User/Fsso                    | authgrp            |api/v2/monitor/user/fsso |
 |VPN/IPSec                    | vpngrp             |api/v2/monitor/vpn/ipsec |
 |VPN/Ssl/Connections          | vpngrp             |api/v2/monitor/vpn/ssl |

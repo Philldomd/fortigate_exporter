@@ -1,4 +1,4 @@
-// Copyright 2025 The Prometheus Authors
+// Copyright The Prometheus Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -18,8 +18,9 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 	"github.com/prometheus/client_golang/prometheus"
+
+	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 )
 
 func probeFirewallLoadBalance(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
@@ -133,11 +134,12 @@ func probeFirewallLoadBalance(c http.FortiHTTP, meta *TargetMetadata) ([]prometh
 				}
 
 				realServerRTTValue := math.NaN()
-				if "<1" == realServer.RTT {
+				switch realServer.RTT {
+				case "<1":
 					realServerRTTValue = 0.001
-				} else if "" == realServer.RTT {
+				case "":
 					// NaN
-				} else {
+				default:
 					if realServerRTTValueInMs, err := strconv.ParseFloat(realServer.RTT, 64); err != nil {
 						log.Printf("Failed to parse RTT value: %v", err)
 					} else {

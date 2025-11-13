@@ -1,4 +1,4 @@
-// Copyright 2025 The Prometheus Authors
+// Copyright The Prometheus Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -41,13 +41,13 @@ import (
 	"github.com/prometheus-community/fortigate_exporter/internal/config"
 )
 
-type HTTPClient interface {
+type Client interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
 type fortiTokenClient struct {
 	tgt url.URL
-	hc  HTTPClient
+	hc  Client
 	ctx context.Context
 	tok config.Token
 }
@@ -61,7 +61,7 @@ func (c *fortiTokenClient) newGetRequest(url string) (*http.Request, error) {
 	return r, nil
 }
 
-func (c *fortiTokenClient) Get(path string, query string, obj interface{}) error {
+func (c *fortiTokenClient) Get(path, query string, obj any) error {
 	u := c.tgt
 	u.Path = path
 	u.RawQuery = query
@@ -77,7 +77,7 @@ func (c *fortiTokenClient) Get(path string, query string, obj interface{}) error
 		return err
 	}
 	if resp.StatusCode != 200 {
-		return fmt.Errorf("Response code was %d, expected 200 (path: %q)", resp.StatusCode, path)
+		return fmt.Errorf("response code was %d, expected 200 (path: %q)", resp.StatusCode, path)
 	}
 
 	b, err := io.ReadAll(resp.Body)
@@ -91,6 +91,6 @@ func (c *fortiTokenClient) String() string {
 	return c.tgt.String()
 }
 
-func newFortiTokenClient(ctx context.Context, tgt url.URL, hc HTTPClient, token config.Token) (*fortiTokenClient, error) {
+func newFortiTokenClient(ctx context.Context, tgt url.URL, hc Client, token config.Token) (*fortiTokenClient, error) {
 	return &fortiTokenClient{tgt, hc, ctx, token}, nil
 }
