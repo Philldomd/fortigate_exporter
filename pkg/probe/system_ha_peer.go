@@ -17,28 +17,27 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 	"github.com/prometheus/client_golang/prometheus"
+
+	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 )
 
-func probeSystemHaPeer (c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
-	var (
-		Priority = prometheus.NewDesc(
-			"fortigate_ha_peer",
-			"True when the peer device is the HA primary.",
-			[]string{"serial","vcluster","hostname","master","primary","priority"}, nil,
-		)
+func probeSystemHaPeer(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
+	Priority := prometheus.NewDesc(
+		"fortigate_ha_peer",
+		"True when the peer device is the HA primary.",
+		[]string{"serial", "vcluster", "hostname", "master", "primary", "priority"}, nil,
 	)
 
 	type SystemHaPeer struct {
 		Serial   string  `json:"serial_no"`
-		Vcluster int64  `json:"vcluster_id"`
+		Vcluster int64   `json:"vcluster_id"`
 		Priority float64 `json:"priority"`
 		Hostname string  `json:"hostname"`
-		Master   bool  `json:"master"`
-		Primary  bool  `json:"primary"`
+		Master   bool    `json:"master"`
+		Primary  bool    `json:"primary"`
 	}
-	
+
 	type SystemHaPeerResult struct {
 		Result []SystemHaPeer `json:"results"`
 	}
@@ -51,7 +50,7 @@ func probeSystemHaPeer (c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Me
 	m := []prometheus.Metric{}
 	for _, r := range res.Result {
 		if meta.VersionMajor >= 7 && meta.VersionMinor >= 4 {
-			if (r.Primary) {
+			if r.Primary {
 				m = append(m, prometheus.MustNewConstMetric(Priority, prometheus.GaugeValue, 1, r.Serial, strconv.FormatInt(r.Vcluster, 10), r.Hostname, strconv.FormatBool(r.Master), "true", strconv.FormatFloat(r.Priority, 'f', -1, 64)))
 				m = append(m, prometheus.MustNewConstMetric(Priority, prometheus.GaugeValue, 0, r.Serial, strconv.FormatInt(r.Vcluster, 10), r.Hostname, strconv.FormatBool(r.Master), "false", strconv.FormatFloat(r.Priority, 'f', -1, 64)))
 			} else {
