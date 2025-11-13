@@ -156,7 +156,7 @@ func (p *Collector) Probe(ctx context.Context, target map[string]string, hc *htt
 		{"System/SDNConnector", probeSystemSDNConnector},
 		{"System/SensorInfo", probeSystemSensorInfo},
 		{"System/Status", probeSystemStatus},
-		{"System/VDOMResource",probeSystemVdomResource},
+		{"System/VDOMResource", probeSystemVdomResource},
 		{"System/HAChecksum", probeSystemHAChecksum},
 		{"User/Fsso", probeUserFsso},
 		{"VPN/IPSec", probeVPNIPSec},

@@ -17,11 +17,12 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 	"github.com/prometheus/client_golang/prometheus"
+
+	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 )
 
-func probeSystemPerformanceStatus(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
+func probeSystemPerformanceStatus(c http.FortiHTTP, _ *TargetMetadata) ([]prometheus.Metric, bool) {
 	var (
 		cpuCoresUser = prometheus.NewDesc(
 			"fortigate_system_performance_status_cpu_cores_user_ratio",
@@ -103,7 +104,7 @@ func probeSystemPerformanceStatus(c http.FortiHTTP, meta *TargetMetadata) ([]pro
 		Iowait int `json:"iowait"`
 	}
 
-	type SystemPerformanceStatusCpu struct {
+	type SystemPerformanceStatusCPU struct {
 		Cores  []SystemPerformanceStatusCores `json:"cores"`
 		User   int                            `json:"user"`
 		System int                            `json:"system"`
@@ -120,7 +121,7 @@ func probeSystemPerformanceStatus(c http.FortiHTTP, meta *TargetMetadata) ([]pro
 	}
 
 	type SystemPerformanceStatus struct {
-		Cpu SystemPerformanceStatusCpu `json:"cpu"`
+		CPU SystemPerformanceStatusCPU `json:"cpu"`
 		Mem SystemPerformanceStatusMem `json:"mem"`
 	}
 
@@ -135,23 +136,23 @@ func probeSystemPerformanceStatus(c http.FortiHTTP, meta *TargetMetadata) ([]pro
 		return nil, false
 	}
 	m := []prometheus.Metric{}
-	var core_num string
-	for i, core := range res.Results.Cpu.Cores {
-		core_num = "core_" + strconv.Itoa(i)
-		m = append(m, prometheus.MustNewConstMetric(cpuCoresUser, prometheus.GaugeValue, float64(core.User) * 0.01, core_num, res.VDOM))
-		m = append(m, prometheus.MustNewConstMetric(cpuCoresSystem, prometheus.GaugeValue, float64(core.System) * 0.01, core_num, res.VDOM))
-		m = append(m, prometheus.MustNewConstMetric(cpuCoresNice, prometheus.GaugeValue, float64(core.Nice) * 0.01, core_num, res.VDOM))
-		m = append(m, prometheus.MustNewConstMetric(cpuCoresIdle, prometheus.GaugeValue, float64(core.Idle) * 0.01, core_num, res.VDOM))
-		m = append(m, prometheus.MustNewConstMetric(cpuCoresIowait, prometheus.GaugeValue, float64(core.Iowait) * 0.01, core_num, res.VDOM))
+	var coreNum string
+	for i, core := range res.Results.CPU.Cores {
+		coreNum = "core_" + strconv.Itoa(i)
+		m = append(m, prometheus.MustNewConstMetric(cpuCoresUser, prometheus.GaugeValue, float64(core.User)*0.01, coreNum, res.VDOM))
+		m = append(m, prometheus.MustNewConstMetric(cpuCoresSystem, prometheus.GaugeValue, float64(core.System)*0.01, coreNum, res.VDOM))
+		m = append(m, prometheus.MustNewConstMetric(cpuCoresNice, prometheus.GaugeValue, float64(core.Nice)*0.01, coreNum, res.VDOM))
+		m = append(m, prometheus.MustNewConstMetric(cpuCoresIdle, prometheus.GaugeValue, float64(core.Idle)*0.01, coreNum, res.VDOM))
+		m = append(m, prometheus.MustNewConstMetric(cpuCoresIowait, prometheus.GaugeValue, float64(core.Iowait)*0.01, coreNum, res.VDOM))
 	}
-	m = append(m, prometheus.MustNewConstMetric(cpuUser,prometheus.GaugeValue, float64(res.Results.Cpu.User) * 0.01, res.VDOM))
-	m = append(m, prometheus.MustNewConstMetric(cpuSystem,prometheus.GaugeValue, float64(res.Results.Cpu.System) * 0.01, res.VDOM))
-	m = append(m, prometheus.MustNewConstMetric(cpuNice,prometheus.GaugeValue, float64(res.Results.Cpu.Nice) * 0.01, res.VDOM))
-	m = append(m, prometheus.MustNewConstMetric(cpuIdle,prometheus.GaugeValue, float64(res.Results.Cpu.Idle) * 0.01, res.VDOM))
-	m = append(m, prometheus.MustNewConstMetric(cpuIowait,prometheus.GaugeValue, float64(res.Results.Cpu.Iowait) * 0.01, res.VDOM))
-	m = append(m, prometheus.MustNewConstMetric(memTotal,prometheus.GaugeValue, float64(res.Results.Mem.Total), res.VDOM))
-	m = append(m, prometheus.MustNewConstMetric(memUsed,prometheus.GaugeValue, float64(res.Results.Mem.Used), res.VDOM))
-	m = append(m, prometheus.MustNewConstMetric(memFree,prometheus.GaugeValue, float64(res.Results.Mem.Free), res.VDOM))
-	m = append(m, prometheus.MustNewConstMetric(memFreeable,prometheus.GaugeValue, float64(res.Results.Mem.Freeable), res.VDOM))
+	m = append(m, prometheus.MustNewConstMetric(cpuUser, prometheus.GaugeValue, float64(res.Results.CPU.User)*0.01, res.VDOM))
+	m = append(m, prometheus.MustNewConstMetric(cpuSystem, prometheus.GaugeValue, float64(res.Results.CPU.System)*0.01, res.VDOM))
+	m = append(m, prometheus.MustNewConstMetric(cpuNice, prometheus.GaugeValue, float64(res.Results.CPU.Nice)*0.01, res.VDOM))
+	m = append(m, prometheus.MustNewConstMetric(cpuIdle, prometheus.GaugeValue, float64(res.Results.CPU.Idle)*0.01, res.VDOM))
+	m = append(m, prometheus.MustNewConstMetric(cpuIowait, prometheus.GaugeValue, float64(res.Results.CPU.Iowait)*0.01, res.VDOM))
+	m = append(m, prometheus.MustNewConstMetric(memTotal, prometheus.GaugeValue, float64(res.Results.Mem.Total), res.VDOM))
+	m = append(m, prometheus.MustNewConstMetric(memUsed, prometheus.GaugeValue, float64(res.Results.Mem.Used), res.VDOM))
+	m = append(m, prometheus.MustNewConstMetric(memFree, prometheus.GaugeValue, float64(res.Results.Mem.Free), res.VDOM))
+	m = append(m, prometheus.MustNewConstMetric(memFreeable, prometheus.GaugeValue, float64(res.Results.Mem.Freeable), res.VDOM))
 	return m, true
 }
