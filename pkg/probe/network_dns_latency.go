@@ -15,17 +15,17 @@ package probe
 
 import (
 	"log"
-	"github.com/prometheus-community/fortigate_exporter/pkg/http"
+
 	"github.com/prometheus/client_golang/prometheus"
+
+	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 )
 
 func probeNetworkDNSLatency(c http.FortiHTTP, _ *TargetMetadata) ([]prometheus.Metric, bool) {
-	var (
-		dnsLatency = prometheus.NewDesc(
-			"fortigate_network_dns_latency_seconds",
-			"Network dns latency",
-			[]string{"service", "ip"}, nil,
-		)
+	dnsLatency := prometheus.NewDesc(
+		"fortigate_network_dns_latency_seconds",
+		"Network dns latency",
+		[]string{"service", "ip"}, nil,
 	)
 
 	type DNSLatencty struct {
@@ -46,7 +46,7 @@ func probeNetworkDNSLatency(c http.FortiHTTP, _ *TargetMetadata) ([]prometheus.M
 	}
 	m := []prometheus.Metric{}
 	for _, r := range res.Results {
-		m = append(m, prometheus.MustNewConstMetric(dnsLatency, prometheus.GaugeValue, r.Latency * 0.001, r.Service, r.IP))
+		m = append(m, prometheus.MustNewConstMetric(dnsLatency, prometheus.GaugeValue, r.Latency*0.001, r.Service, r.IP))
 	}
 
 	return m, true

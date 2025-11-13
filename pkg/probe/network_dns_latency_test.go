@@ -15,6 +15,7 @@ package probe
 import (
 	"strings"
 	"testing"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/testutil"
 )
