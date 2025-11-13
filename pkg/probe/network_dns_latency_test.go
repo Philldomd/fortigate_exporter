@@ -15,7 +15,6 @@ package probe
 import (
 	"strings"
 	"testing"
-
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/testutil"
 )
@@ -24,8 +23,8 @@ func TestNetworkDnsLatency(t *testing.T) {
 	c := newFakeClient()
 	c.prepare("api/v2/monitor/network/dns/latency", "testdata/network-dns-latency.jsonnet")
 	r := prometheus.NewPedanticRegistry()
-	if !testProbe(probeNetworkDnsLatency, c, r) {
-		t.Errorf("probeNetworkDnsLatency() returned non-success")
+	if !testProbe(probeNetworkDNSLatency, c, r) {
+		t.Errorf("probeNetworkDNSLatency() returned non-success")
 	}
 
 	em := `
