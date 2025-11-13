@@ -17,11 +17,12 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 	"github.com/prometheus/client_golang/prometheus"
+
+	"github.com/prometheus-community/fortigate_exporter/pkg/http"
 )
 
-func probeSystemCentralManagementStatus (c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
+func probeSystemCentralManagementStatus(c http.FortiHTTP, _ *TargetMetadata) ([]prometheus.Metric, bool) {
 	var (
 		mode = prometheus.NewDesc(
 			"fortigate_system_central_management_mode",
@@ -45,7 +46,7 @@ func probeSystemCentralManagementStatus (c http.FortiHTTP, meta *TargetMetadata)
 		Server     string  `json:"server"`
 		Status     string  `json:"status"`
 		RegStat    string  `json:"registration_status"`
-		MgmtIp     string  `json:"mgmt_ip"`
+		MgmtIP     string  `json:"mgmt_ip"`
 		MgmtPort   float64 `json:"mgmt_port"`
 		Sn         string  `json:"sn"`
 		PenFortMan string  `json:"pending_fortimanager"`
@@ -62,7 +63,7 @@ func probeSystemCentralManagementStatus (c http.FortiHTTP, meta *TargetMetadata)
 	}
 
 	m := []prometheus.Metric{}
-  var normal, backup, down, up, handshake, inProgress, registered, unregistered, defaultValue float64
+	var normal, backup, down, up, handshake, inProgress, registered, unregistered, defaultValue float64
 	if res.Result.Mode == "normal" {
 		normal = 1
 	} else {
@@ -86,16 +87,15 @@ func probeSystemCentralManagementStatus (c http.FortiHTTP, meta *TargetMetadata)
 	default:
 		defaultValue = 1
 	}
-	m = append(m, prometheus.MustNewConstMetric(mode, prometheus.GaugeValue, normal, "normal", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
-	m = append(m, prometheus.MustNewConstMetric(mode, prometheus.GaugeValue, backup, "backup", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
-	m = append(m, prometheus.MustNewConstMetric(status, prometheus.GaugeValue, down, "down", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
-	m = append(m, prometheus.MustNewConstMetric(status, prometheus.GaugeValue, up, "up", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
-	m = append(m, prometheus.MustNewConstMetric(status, prometheus.GaugeValue, handshake, "handshake", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
-	m = append(m, prometheus.MustNewConstMetric(registrationStatus, prometheus.GaugeValue, inProgress, "inprogress", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
-	m = append(m, prometheus.MustNewConstMetric(registrationStatus, prometheus.GaugeValue, registered, "registered", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
-	m = append(m, prometheus.MustNewConstMetric(registrationStatus, prometheus.GaugeValue, unregistered, "unregistered", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
-	m = append(m, prometheus.MustNewConstMetric(registrationStatus, prometheus.GaugeValue, defaultValue, "unknown", res.Result.Server, res.Result.MgmtIp, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
-	
-	
+	m = append(m, prometheus.MustNewConstMetric(mode, prometheus.GaugeValue, normal, "normal", res.Result.Server, res.Result.MgmtIP, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(mode, prometheus.GaugeValue, backup, "backup", res.Result.Server, res.Result.MgmtIP, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(status, prometheus.GaugeValue, down, "down", res.Result.Server, res.Result.MgmtIP, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(status, prometheus.GaugeValue, up, "up", res.Result.Server, res.Result.MgmtIP, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(status, prometheus.GaugeValue, handshake, "handshake", res.Result.Server, res.Result.MgmtIP, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(registrationStatus, prometheus.GaugeValue, inProgress, "inprogress", res.Result.Server, res.Result.MgmtIP, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(registrationStatus, prometheus.GaugeValue, registered, "registered", res.Result.Server, res.Result.MgmtIP, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(registrationStatus, prometheus.GaugeValue, unregistered, "unregistered", res.Result.Server, res.Result.MgmtIP, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+	m = append(m, prometheus.MustNewConstMetric(registrationStatus, prometheus.GaugeValue, defaultValue, "unknown", res.Result.Server, res.Result.MgmtIP, strconv.FormatFloat(res.Result.MgmtPort, 'f', -1, 64), res.Result.Sn, res.Result.PenFortMan))
+
 	return m, true
 }
