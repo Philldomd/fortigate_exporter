@@ -23,10 +23,16 @@ import (
 )
 
 func probeSystemHaPeer(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
-	Priority := prometheus.NewDesc(
-		"fortigate_ha_peer",
+	Info := prometheus.NewDesc(
+		"fortigate_ha_peer_info",
+		"Information about the ha peer.",
+		[]string{"serial", "vcluster", "hostname", "priority"}, nil,
+	)
+
+	Primary := prometheus.NewDesc(
+		"fortigate_ha_peer_primary",
 		"True when the peer device is the HA primary.",
-		[]string{"serial", "vcluster", "hostname", "master", "primary", "priority"}, nil,
+		[]string{"vcluster", "hostname"}, nil,
 	)
 
 	type SystemHaPeer struct {
@@ -50,15 +56,14 @@ func probeSystemHaPeer(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Met
 	m := []prometheus.Metric{}
 	for _, r := range res.Result {
 		if meta.VersionMajor >= 7 && meta.VersionMinor >= 4 {
+			m = append(m, prometheus.MustNewConstMetric(Info, prometheus.GaugeValue, 1, r.Serial, strconv.FormatInt(r.Vcluster, 10), r.Hostname, strconv.FormatFloat(r.Priority, 'f', -1, 64)))
 			if r.Primary {
-				m = append(m, prometheus.MustNewConstMetric(Priority, prometheus.GaugeValue, 1, r.Serial, strconv.FormatInt(r.Vcluster, 10), r.Hostname, strconv.FormatBool(r.Master), "true", strconv.FormatFloat(r.Priority, 'f', -1, 64)))
-				m = append(m, prometheus.MustNewConstMetric(Priority, prometheus.GaugeValue, 0, r.Serial, strconv.FormatInt(r.Vcluster, 10), r.Hostname, strconv.FormatBool(r.Master), "false", strconv.FormatFloat(r.Priority, 'f', -1, 64)))
+				m = append(m, prometheus.MustNewConstMetric(Primary, prometheus.GaugeValue, 1, strconv.FormatInt(r.Vcluster, 10), r.Hostname))
 			} else {
-				m = append(m, prometheus.MustNewConstMetric(Priority, prometheus.GaugeValue, 0, r.Serial, strconv.FormatInt(r.Vcluster, 10), r.Hostname, strconv.FormatBool(r.Master), "true", strconv.FormatFloat(r.Priority, 'f', -1, 64)))
-				m = append(m, prometheus.MustNewConstMetric(Priority, prometheus.GaugeValue, 1, r.Serial, strconv.FormatInt(r.Vcluster, 10), r.Hostname, strconv.FormatBool(r.Master), "false", strconv.FormatFloat(r.Priority, 'f', -1, 64)))
+				m = append(m, prometheus.MustNewConstMetric(Primary, prometheus.GaugeValue, 0, strconv.FormatInt(r.Vcluster, 10), r.Hostname))
 			}
 		} else {
-			m = append(m, prometheus.MustNewConstMetric(Priority, prometheus.GaugeValue, -1, "None", "0", "None", "false", "Unsupported", "false"))
+			m = append(m, prometheus.MustNewConstMetric(Info, prometheus.GaugeValue, -1, "None", "0", "None", "false"))
 			break
 		}
 	}

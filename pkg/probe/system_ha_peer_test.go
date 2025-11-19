@@ -34,9 +34,9 @@ func TestSystemHaPeerOld(t *testing.T) {
 	}
 
 	em := `
-	# HELP fortigate_ha_peer True when the peer device is the HA primary.
-	# TYPE fortigate_ha_peer gauge
-	fortigate_ha_peer{hostname="None",master="false",primary="Unsupported",priority="false",serial="None",vcluster="0"} -1
+	# HELP fortigate_ha_peer_info Information about the ha peer.
+	# TYPE fortigate_ha_peer_info gauge
+	fortigate_ha_peer_info{hostname="None",priority="false",serial="None",vcluster="0"} -1
 	`
 
 	if err := testutil.GatherAndCompare(r, strings.NewReader(em)); err != nil {
@@ -57,12 +57,14 @@ func TestSystemHaPeerAfter74(t *testing.T) {
 	}
 
 	em := `
-	# HELP fortigate_ha_peer True when the peer device is the HA primary.
-	# TYPE fortigate_ha_peer gauge
-	fortigate_ha_peer{hostname="member-name-1",master="false",primary="false",priority="200",serial="FGT61E4QXXXXXXXX1",vcluster="0"} 0
-	fortigate_ha_peer{hostname="member-name-1",master="false",primary="true",priority="200",serial="FGT61E4QXXXXXXXX1",vcluster="0"} 1
-	fortigate_ha_peer{hostname="member-name-2",master="false",primary="false",priority="100",serial="FGT61E4QXXXXXXXX2",vcluster="0"} 1
-	fortigate_ha_peer{hostname="member-name-2",master="false",primary="true",priority="100",serial="FGT61E4QXXXXXXXX2",vcluster="0"} 0
+	# HELP fortigate_ha_peer_info Information about the ha peer.
+	# TYPE fortigate_ha_peer_info gauge
+	fortigate_ha_peer_info{hostname="member-name-1",priority="200",serial="FGT61E4QXXXXXXXX1",vcluster="0"} 1
+	fortigate_ha_peer_info{hostname="member-name-2",priority="100",serial="FGT61E4QXXXXXXXX2",vcluster="0"} 1
+	# HELP fortigate_ha_peer_primary True when the peer device is the HA primary.
+	# TYPE fortigate_ha_peer_primary gauge
+	fortigate_ha_peer_primary{hostname="member-name-1",vcluster="0"} 1
+	fortigate_ha_peer_primary{hostname="member-name-2",vcluster="0"} 0
 	`
 
 	if err := testutil.GatherAndCompare(r, strings.NewReader(em)); err != nil {
