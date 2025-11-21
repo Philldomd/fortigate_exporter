@@ -38,7 +38,8 @@ Global:
  * _System/HAChecksums_
    * `fortigate_ha_member_has_role`
  * _System/HAPeer_
-   * `fortigate_ha_peer`
+   * `fortigate_ha_peer_info`
+   * `fortigate_ha_peer_primary`
  * _System/Ntp/Status_
    * `fortigate_system_ntp_delay_seconds`
    * `fortigate_system_ntp_dispersion_seconds`

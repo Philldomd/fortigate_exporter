@@ -1,4 +1,4 @@
-// Copyright 2025 The Prometheus Authors
+// Copyright The Prometheus Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,13 +23,13 @@ import (
 )
 
 func probeSystemHaPeer(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Metric, bool) {
-	Info := prometheus.NewDesc(
+	info := prometheus.NewDesc(
 		"fortigate_ha_peer_info",
 		"Information about the ha peer.",
 		[]string{"serial", "vcluster", "hostname", "priority"}, nil,
 	)
 
-	Primary := prometheus.NewDesc(
+	primary := prometheus.NewDesc(
 		"fortigate_ha_peer_primary",
 		"True when the peer device is the HA primary.",
 		[]string{"vcluster", "hostname"}, nil,
@@ -56,14 +56,14 @@ func probeSystemHaPeer(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Met
 	m := []prometheus.Metric{}
 	for _, r := range res.Result {
 		if meta.VersionMajor >= 7 && meta.VersionMinor >= 4 {
-			m = append(m, prometheus.MustNewConstMetric(Info, prometheus.GaugeValue, 1, r.Serial, strconv.FormatInt(r.Vcluster, 10), r.Hostname, strconv.FormatFloat(r.Priority, 'f', -1, 64)))
+			m = append(m, prometheus.MustNewConstMetric(info, prometheus.GaugeValue, 1, r.Serial, strconv.FormatInt(r.Vcluster, 10), r.Hostname, strconv.FormatFloat(r.Priority, 'f', -1, 64)))
 			if r.Primary {
-				m = append(m, prometheus.MustNewConstMetric(Primary, prometheus.GaugeValue, 1, strconv.FormatInt(r.Vcluster, 10), r.Hostname))
+				m = append(m, prometheus.MustNewConstMetric(primary, prometheus.GaugeValue, 1, strconv.FormatInt(r.Vcluster, 10), r.Hostname))
 			} else {
-				m = append(m, prometheus.MustNewConstMetric(Primary, prometheus.GaugeValue, 0, strconv.FormatInt(r.Vcluster, 10), r.Hostname))
+				m = append(m, prometheus.MustNewConstMetric(primary, prometheus.GaugeValue, 0, strconv.FormatInt(r.Vcluster, 10), r.Hostname))
 			}
 		} else {
-			m = append(m, prometheus.MustNewConstMetric(Info, prometheus.GaugeValue, -1, "None", "0", "None", "false"))
+			m = append(m, prometheus.MustNewConstMetric(info, prometheus.GaugeValue, -1, "None", "0", "None", "false"))
 			break
 		}
 	}
