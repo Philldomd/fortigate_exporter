@@ -61,6 +61,10 @@ func TestSystemHaPeerAfter74(t *testing.T) {
 	# TYPE fortigate_ha_peer_info gauge
 	fortigate_ha_peer_info{hostname="member-name-1",priority="200",serial="FGT61E4QXXXXXXXX1",vcluster="0"} 1
 	fortigate_ha_peer_info{hostname="member-name-2",priority="100",serial="FGT61E4QXXXXXXXX2",vcluster="0"} 1
+	# HELP fortigate_ha_peer_master True when the peer device is the HA master.
+	# TYPE fortigate_ha_peer_master gauge
+	fortigate_ha_peer_master{hostname="member-name-1",vcluster="0"} 0
+	fortigate_ha_peer_master{hostname="member-name-2",vcluster="0"} 1
 	# HELP fortigate_ha_peer_primary True when the peer device is the HA primary.
 	# TYPE fortigate_ha_peer_primary gauge
 	fortigate_ha_peer_primary{hostname="member-name-1",vcluster="0"} 1

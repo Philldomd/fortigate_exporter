@@ -35,6 +35,12 @@ func probeSystemHaPeer(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Met
 		[]string{"vcluster", "hostname"}, nil,
 	)
 
+	master := prometheus.NewDesc(
+		"fortigate_ha_peer_master",
+		"True when the peer device is the HA master.",
+		[]string{"vcluster", "hostname"}, nil,
+	)
+
 	type SystemHaPeer struct {
 		Serial   string  `json:"serial_no"`
 		Vcluster int64   `json:"vcluster_id"`
@@ -61,6 +67,13 @@ func probeSystemHaPeer(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus.Met
 				m = append(m, prometheus.MustNewConstMetric(primary, prometheus.GaugeValue, 1, strconv.FormatInt(r.Vcluster, 10), r.Hostname))
 			} else {
 				m = append(m, prometheus.MustNewConstMetric(primary, prometheus.GaugeValue, 0, strconv.FormatInt(r.Vcluster, 10), r.Hostname))
+			}
+			if meta.VersionMinor == 4 {
+				if r.Master {
+					m = append(m, prometheus.MustNewConstMetric(master, prometheus.GaugeValue, 1, strconv.FormatInt(r.Vcluster, 10), r.Hostname))
+				} else {
+					m = append(m, prometheus.MustNewConstMetric(master, prometheus.GaugeValue, 0, strconv.FormatInt(r.Vcluster, 10), r.Hostname))
+				}
 			}
 		} else {
 			m = append(m, prometheus.MustNewConstMetric(info, prometheus.GaugeValue, -1, "None", "0", "None", "false"))

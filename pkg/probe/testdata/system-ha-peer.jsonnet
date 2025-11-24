@@ -13,7 +13,8 @@
       "serial_no":"FGT61E4QXXXXXXXX2",
       "vcluster_id":0,
       "priority":100,
-      "hostname":"member-name-2"
+      "hostname":"member-name-2",
+      "master": true
     }
   ],
   "vdom":"root",
