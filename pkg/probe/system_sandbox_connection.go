@@ -1,4 +1,4 @@
-// Copyright 2025 The Prometheus Authors
+// Copyright The Prometheus Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,9 +22,19 @@ import (
 )
 
 func probeSystemSandboxConnection(c http.FortiHTTP, _ *TargetMetadata) ([]prometheus.Metric, bool) {
-	connectionStatus := prometheus.NewDesc(
-		"fortigate_sandbox_connection_status",
-		"Sandbox connection status, (unreachable=0, reachable=1, disabled=-1)",
+	connectionStatusDisable := prometheus.NewDesc(
+		"fortigate_sandbox_connection_status_disabled",
+		"Sandbox connection status",
+		[]string{"sandbox_type"}, nil,
+	)
+	connectionStatusUreachable := prometheus.NewDesc(
+		"fortigate_sandbox_connection_status_unreachable",
+		"Sandbox connection status",
+		[]string{"sandbox_type"}, nil,
+	)
+	connectionStatusReachable := prometheus.NewDesc(
+		"fortigate_sandbox_connection_status_reachable",
+		"Sandbox connection status",
 		[]string{"sandbox_type"}, nil,
 	)
 
@@ -46,11 +56,17 @@ func probeSystemSandboxConnection(c http.FortiHTTP, _ *TargetMetadata) ([]promet
 	for _, r := range res.Results {
 		switch r.Status {
 		case "unreachable":
-			m = append(m, prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, 0, r.Type))
+			m = append(m, prometheus.MustNewConstMetric(connectionStatusUreachable, prometheus.GaugeValue, 1, r.Type))
+			m = append(m, prometheus.MustNewConstMetric(connectionStatusReachable, prometheus.GaugeValue, 0, r.Type))
+			m = append(m, prometheus.MustNewConstMetric(connectionStatusDisable, prometheus.GaugeValue, 0, r.Type))
 		case "reachable":
-			m = append(m, prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, 1, r.Type))
+			m = append(m, prometheus.MustNewConstMetric(connectionStatusUreachable, prometheus.GaugeValue, 0, r.Type))
+			m = append(m, prometheus.MustNewConstMetric(connectionStatusReachable, prometheus.GaugeValue, 1, r.Type))
+			m = append(m, prometheus.MustNewConstMetric(connectionStatusDisable, prometheus.GaugeValue, 0, r.Type))
 		case "disabled":
-			m = append(m, prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, -1, r.Type))
+			m = append(m, prometheus.MustNewConstMetric(connectionStatusUreachable, prometheus.GaugeValue, 0, r.Type))
+			m = append(m, prometheus.MustNewConstMetric(connectionStatusReachable, prometheus.GaugeValue, 0, r.Type))
+			m = append(m, prometheus.MustNewConstMetric(connectionStatusDisable, prometheus.GaugeValue, 1, r.Type))
 		}
 	}
 	return m, true

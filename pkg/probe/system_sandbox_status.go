@@ -1,4 +1,4 @@
-// Copyright 2025 The Prometheus Authors
+// Copyright The Prometheus Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -24,7 +24,7 @@ import (
 
 func probeSystemSandboxStatus(c http.FortiHTTP, _ *TargetMetadata) ([]prometheus.Metric, bool) {
 	Count := prometheus.NewDesc(
-		"fortigate_system_sandbox_status_signatures",
+		"fortigate_system_sandbox_status_signatures_count",
 		"The number of signatures that have been loaded on the FortiSandbox.",
 		[]string{"configured", "type", "cloud_region", "server", "malware_package_version", "signatures_loaded", "vdom"}, nil,
 	)

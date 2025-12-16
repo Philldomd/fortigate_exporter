@@ -1,4 +1,4 @@
-// Copyright 2025 The Prometheus Authors
+// Copyright The Prometheus Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -30,9 +30,15 @@ func TestSystemSandboxConnection(t *testing.T) {
 	}
 
 	em := `
-	# HELP fortigate_sandbox_connection_status Sandbox connection status, (unreachable=0, reachable=1, disabled=-1)
-	# TYPE fortigate_sandbox_connection_status gauge
-	fortigate_sandbox_connection_status{type="appliance"} 1
+	# HELP fortigate_sandbox_connection_status_disabled Sandbox connection status
+	# TYPE fortigate_sandbox_connection_status_disabled gauge
+	fortigate_sandbox_connection_status_disabled{sandbox_type="appliance"} 0
+	# HELP fortigate_sandbox_connection_status_reachable Sandbox connection status
+	# TYPE fortigate_sandbox_connection_status_reachable gauge
+	fortigate_sandbox_connection_status_reachable{sandbox_type="appliance"} 1
+	# HELP fortigate_sandbox_connection_status_unreachable Sandbox connection status
+	# TYPE fortigate_sandbox_connection_status_unreachable gauge
+	fortigate_sandbox_connection_status_unreachable{sandbox_type="appliance"} 0
 	`
 
 	if err := testutil.GatherAndCompare(r, strings.NewReader(em)); err != nil {
