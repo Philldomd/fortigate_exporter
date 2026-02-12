@@ -30,14 +30,30 @@ func TestSystemSDNConnector(t *testing.T) {
 	}
 
 	em := `
-	# HELP fortigate_system_sdn_connector_status Status of SDN connectors (0=Disabled, 1=Down, 2=Unknown, 3=Up, 4=Updating)
-	# TYPE fortigate_system_sdn_connector_status gauge
-	fortigate_system_sdn_connector_status{name="AWS Infra",type="aws",vdom="root"} 3
-	fortigate_system_sdn_connector_status{name="GCP Infra",type="gcp",vdom="google"} 1
+	# HELP fortigate_system_sdn_connector_disabled Status of SDN connectors disabled
+	# TYPE fortigate_system_sdn_connector_disabled gauge
+	fortigate_system_sdn_connector_disabled{name="AWS Infra",type="aws",vdom="root"} 0
+	fortigate_system_sdn_connector_disabled{name="GCP Infra",type="gcp",vdom="google"} 0
+	# HELP fortigate_system_sdn_connector_down Status of SDN connectors down
+	# TYPE fortigate_system_sdn_connector_down gauge
+	fortigate_system_sdn_connector_down{name="AWS Infra",type="aws",vdom="root"} 0
+	fortigate_system_sdn_connector_down{name="GCP Infra",type="gcp",vdom="google"} 1
 	# HELP fortigate_system_sdn_connector_last_update_seconds Last update time for SDN connectors (in seconds from epoch)
 	# TYPE fortigate_system_sdn_connector_last_update_seconds gauge
-	fortigate_system_sdn_connector_last_update_seconds{name="AWS Infra",type="aws",vdom="root"} 1680708575
-	fortigate_system_sdn_connector_last_update_seconds{name="GCP Infra",type="gcp",vdom="google"} 1680708001
+	fortigate_system_sdn_connector_last_update_seconds{name="AWS Infra",type="aws",vdom="root"} 1.680708575e+09
+	fortigate_system_sdn_connector_last_update_seconds{name="GCP Infra",type="gcp",vdom="google"} 1.680708001e+09
+	# HELP fortigate_system_sdn_connector_unknown Status of SDN connectors unknown
+	# TYPE fortigate_system_sdn_connector_unknown gauge
+	fortigate_system_sdn_connector_unknown{name="AWS Infra",type="aws",vdom="root"} 0
+	fortigate_system_sdn_connector_unknown{name="GCP Infra",type="gcp",vdom="google"} 0
+	# HELP fortigate_system_sdn_connector_up Status of SDN connectors up
+	# TYPE fortigate_system_sdn_connector_up gauge
+	fortigate_system_sdn_connector_up{name="AWS Infra",type="aws",vdom="root"} 1
+	fortigate_system_sdn_connector_up{name="GCP Infra",type="gcp",vdom="google"} 0
+	# HELP fortigate_system_sdn_connector_updating Status of SDN connectors updating
+	# TYPE fortigate_system_sdn_connector_updating gauge
+	fortigate_system_sdn_connector_updating{name="AWS Infra",type="aws",vdom="root"} 0
+	fortigate_system_sdn_connector_updating{name="GCP Infra",type="gcp",vdom="google"} 0
 	`
 
 	if err := testutil.GatherAndCompare(r, strings.NewReader(em)); err != nil {
