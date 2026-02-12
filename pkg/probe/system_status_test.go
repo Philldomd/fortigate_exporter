@@ -30,9 +30,18 @@ func TestSystemStatus(t *testing.T) {
 	}
 
 	em := `
+	# HELP fortigate_system_status_log_disk_available System log disk availability status
+	# TYPE fortigate_system_status_log_disk_available gauge
+	fortigate_system_status_log_disk_available{build="1112",hostname="fgt-test-1",module="F2K60F",name="FortiGate",number="2600F",serial="FGVMEVZFNTS3OAC8",version="v6.2.4"} 0
+	# HELP fortigate_system_status_log_disk_need_format System log disk availability status
+	# TYPE fortigate_system_status_log_disk_need_format gauge
+	fortigate_system_status_log_disk_need_format{build="1112",hostname="fgt-test-1",module="F2K60F",name="FortiGate",number="2600F",serial="FGVMEVZFNTS3OAC8",version="v6.2.4"} 0
+	# HELP fortigate_system_status_log_disk_not_available System log disk availability status
+	# TYPE fortigate_system_status_log_disk_not_available gauge
+	fortigate_system_status_log_disk_not_available{build="1112",hostname="fgt-test-1",module="F2K60F",name="FortiGate",number="2600F",serial="FGVMEVZFNTS3OAC8",version="v6.2.4"} 1
 	# HELP fortigate_version_info System version and build information
 	# TYPE fortigate_version_info gauge
-	fortigate_version_info{build="1112",serial="FGVMEVZFNTS3OAC8",version="v6.2.4"} 1
+	fortigate_version_info{build="1112",hostname="fgt-test-1",module="F2K60F",name="FortiGate",number="2600F",serial="FGVMEVZFNTS3OAC8",version="v6.2.4"} 1
 	`
 
 	if err := testutil.GatherAndCompare(r, strings.NewReader(em)); err != nil {
