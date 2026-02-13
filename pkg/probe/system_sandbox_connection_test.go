@@ -33,12 +33,21 @@ func TestSystemSandboxConnection(t *testing.T) {
 	# HELP fortigate_sandbox_connection_status_disabled Sandbox connection status
 	# TYPE fortigate_sandbox_connection_status_disabled gauge
 	fortigate_sandbox_connection_status_disabled{sandbox_type="appliance"} 0
+	# HELP fortigate_sandbox_connection_status_incompatible Sandbox connection status
+	# TYPE fortigate_sandbox_connection_status_incompatible gauge
+	fortigate_sandbox_connection_status_incompatible{sandbox_type="appliance"} 0
 	# HELP fortigate_sandbox_connection_status_reachable Sandbox connection status
 	# TYPE fortigate_sandbox_connection_status_reachable gauge
 	fortigate_sandbox_connection_status_reachable{sandbox_type="appliance"} 1
+	# HELP fortigate_sandbox_connection_status_unauthorized Sandbox connection status
+	# TYPE fortigate_sandbox_connection_status_unauthorized gauge
+	fortigate_sandbox_connection_status_unauthorized{sandbox_type="appliance"} 0
 	# HELP fortigate_sandbox_connection_status_unreachable Sandbox connection status
 	# TYPE fortigate_sandbox_connection_status_unreachable gauge
 	fortigate_sandbox_connection_status_unreachable{sandbox_type="appliance"} 0
+	# HELP fortigate_sandbox_connection_status_unverified Sandbox connection status
+	# TYPE fortigate_sandbox_connection_status_unverified gauge
+	fortigate_sandbox_connection_status_unverified{sandbox_type="appliance"} 0
 	`
 
 	if err := testutil.GatherAndCompare(r, strings.NewReader(em)); err != nil {
