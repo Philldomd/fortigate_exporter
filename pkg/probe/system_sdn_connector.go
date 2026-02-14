@@ -36,30 +36,10 @@ type SystemSDNConnector struct {
 
 func probeSystemSDNConnector(c http.FortiHTTP, _ *TargetMetadata) ([]prometheus.Metric, bool) {
 	var (
-		SDNConnectorsStatusDisabled = prometheus.NewDesc(
-			"fortigate_system_sdn_connector_disabled",
+		SDNConnectorsState = prometheus.NewDesc(
+			"fortigate_system_sdn_connector_state",
 			"Status of SDN connectors disabled",
-			[]string{"vdom", "name", "type"}, nil,
-		)
-		SDNConnectorsStatusDown = prometheus.NewDesc(
-			"fortigate_system_sdn_connector_down",
-			"Status of SDN connectors down",
-			[]string{"vdom", "name", "type"}, nil,
-		)
-		SDNConnectorsStatusUnknown = prometheus.NewDesc(
-			"fortigate_system_sdn_connector_unknown",
-			"Status of SDN connectors unknown",
-			[]string{"vdom", "name", "type"}, nil,
-		)
-		SDNConnectorsStatusUp = prometheus.NewDesc(
-			"fortigate_system_sdn_connector_up",
-			"Status of SDN connectors up",
-			[]string{"vdom", "name", "type"}, nil,
-		)
-		SDNConnectorsStatusUpdating = prometheus.NewDesc(
-			"fortigate_system_sdn_connector_updating",
-			"Status of SDN connectors updating",
-			[]string{"vdom", "name", "type"}, nil,
+			[]string{"vdom", "name", "type", "state"}, nil,
 		)
 		SDNConnectorsLastUpdate = prometheus.NewDesc(
 			"fortigate_system_sdn_connector_last_update_seconds",
@@ -77,39 +57,27 @@ func probeSystemSDNConnector(c http.FortiHTTP, _ *TargetMetadata) ([]prometheus.
 	m := []prometheus.Metric{}
 	for _, r := range res {
 		for _, sdnConn := range r.Results {
+			t := []prometheus.Metric{
+				prometheus.MustNewConstMetric(SDNConnectorsState, prometheus.GaugeValue, 0.0, r.VDOM, sdnConn.Name, sdnConn.Type, "Disabled"),
+				prometheus.MustNewConstMetric(SDNConnectorsState, prometheus.GaugeValue, 0.0, r.VDOM, sdnConn.Name, sdnConn.Type, "Down"),
+				prometheus.MustNewConstMetric(SDNConnectorsState, prometheus.GaugeValue, 0.0, r.VDOM, sdnConn.Name, sdnConn.Type, "Unknown"),
+				prometheus.MustNewConstMetric(SDNConnectorsState, prometheus.GaugeValue, 0.0, r.VDOM, sdnConn.Name, sdnConn.Type, "Up"),
+				prometheus.MustNewConstMetric(SDNConnectorsState, prometheus.GaugeValue, 0.0, r.VDOM, sdnConn.Name, sdnConn.Type, "Updating"),
+			}
 			switch sdnConn.Status {
 			case "Disabled":
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusDisabled, prometheus.GaugeValue, float64(1), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusDown, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusUnknown, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusUp, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusUpdating, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
+				t[0] = prometheus.MustNewConstMetric(SDNConnectorsState, prometheus.GaugeValue, 1.0, r.VDOM, sdnConn.Name, sdnConn.Type, sdnConn.Status)
 			case "Down":
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusDisabled, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusDown, prometheus.GaugeValue, float64(1), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusUnknown, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusUp, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusUpdating, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
+				t[1] = prometheus.MustNewConstMetric(SDNConnectorsState, prometheus.GaugeValue, 1.0, r.VDOM, sdnConn.Name, sdnConn.Type, sdnConn.Status)
 			case "Unknown":
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusDisabled, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusDown, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusUnknown, prometheus.GaugeValue, float64(1), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusUp, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusUpdating, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
+				t[2] = prometheus.MustNewConstMetric(SDNConnectorsState, prometheus.GaugeValue, 1.0, r.VDOM, sdnConn.Name, sdnConn.Type, sdnConn.Status)
 			case "Up":
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusDisabled, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusDown, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusUnknown, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusUp, prometheus.GaugeValue, float64(1), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusUpdating, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
+				t[3] = prometheus.MustNewConstMetric(SDNConnectorsState, prometheus.GaugeValue, 1.0, r.VDOM, sdnConn.Name, sdnConn.Type, sdnConn.Status)
 			case "Updating":
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusDisabled, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusDown, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusUnknown, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusUp, prometheus.GaugeValue, float64(0), r.VDOM, sdnConn.Name, sdnConn.Type))
-				m = append(m, prometheus.MustNewConstMetric(SDNConnectorsStatusUpdating, prometheus.GaugeValue, float64(1), r.VDOM, sdnConn.Name, sdnConn.Type))
+				t[4] = prometheus.MustNewConstMetric(SDNConnectorsState, prometheus.GaugeValue, 1.0, r.VDOM, sdnConn.Name, sdnConn.Type, sdnConn.Status)
 			}
 			m = append(m, prometheus.MustNewConstMetric(SDNConnectorsLastUpdate, prometheus.GaugeValue, float64(sdnConn.LastUpdate), r.VDOM, sdnConn.Name, sdnConn.Type))
+			m = append(m, t...)
 		}
 	}
 
