@@ -24,7 +24,7 @@
         "local_ip":"fd00::1",
         "remote_as":"1337",
         "admin_status":true,
-        "state":"Connected",
+        "state":"Connect",
         "type":"ipv6"
       }
     ],

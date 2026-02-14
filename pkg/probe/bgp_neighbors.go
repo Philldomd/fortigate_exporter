@@ -133,38 +133,10 @@ func probeBGPNeighborsIPv4(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus
 		return probeBGPNeighborsIPv4Old(c, meta)
 	}
 
-	var (
-		mBGPNeighborIdle = prometheus.NewDesc(
-			"fortigate_bgp_neighbor_ipv4_idle_info",
+	var mBGPNeighborState= prometheus.NewDesc(
+			"fortigate_bgp_neighbor_ipv4_state",
 			"Configured bgp neighbor over ipv4 state",
-			[]string{"vdom", "remote_as", "admin_status", "local_ip", "neighbor_ip"}, nil,
-		)
-		mBGPNeighborConnected = prometheus.NewDesc(
-			"fortigate_bgp_neighbor_ipv4_connected_info",
-			"Configured bgp neighbor over ipv4 state",
-			[]string{"vdom", "remote_as", "admin_status", "local_ip", "neighbor_ip"}, nil,
-		)
-		mBGPNeighborActive = prometheus.NewDesc(
-			"fortigate_bgp_neighbor_ipv4_active_info",
-			"Configured bgp neighbor over ipv4 state",
-			[]string{"vdom", "remote_as", "admin_status", "local_ip", "neighbor_ip"}, nil,
-		)
-		mBGPNeighborOpenSent = prometheus.NewDesc(
-			"fortigate_bgp_neighbor_ipv4_open_sent_info",
-			"Configured bgp neighbor over ipv4 state",
-			[]string{"vdom", "remote_as", "admin_status", "local_ip", "neighbor_ip"}, nil,
-		)
-		mBGPNeighborOpenConfirm = prometheus.NewDesc(
-			"fortigate_bgp_neighbor_ipv4_open_confirm_info",
-			"Configured bgp neighbor over ipv4 state",
-			[]string{"vdom", "remote_as", "admin_status", "local_ip", "neighbor_ip"}, nil,
-		)
-		mBGPNeighborEstablished = prometheus.NewDesc(
-			"fortigate_bgp_neighbor_ipv4_established_info",
-			"Configured bgp neighbor over ipv4 state",
-			[]string{"vdom", "remote_as", "admin_status", "local_ip", "neighbor_ip"}, nil,
-		)
-	)
+			[]string{"vdom", "remote_as", "admin_status", "local_ip", "neighbor_ip", "state"}, nil,)
 
 	var rs []BGPNeighborResponse
 
@@ -178,26 +150,26 @@ func probeBGPNeighborsIPv4(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus
 	for _, r := range rs {
 		for _, peer := range r.Results {
 			t := []prometheus.Metric{
-				prometheus.MustNewConstMetric(mBGPNeighborIdle, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP),
-				prometheus.MustNewConstMetric(mBGPNeighborConnected, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP),
-				prometheus.MustNewConstMetric(mBGPNeighborActive, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP),
-				prometheus.MustNewConstMetric(mBGPNeighborOpenSent, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP),
-				prometheus.MustNewConstMetric(mBGPNeighborOpenConfirm, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP),
-				prometheus.MustNewConstMetric(mBGPNeighborEstablished, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP),
+				prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, "Idle"),
+				prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, "Connect"),
+				prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, "Active"),
+				prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, "Open sent"),
+				prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, "Open confirm"),
+				prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, "Established"),
 			}
 			switch peer.State {
 			case "Idle":
-				t[0] = prometheus.MustNewConstMetric(mBGPNeighborIdle, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP)
+				t[0] = prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, peer.State)
 			case "Connect":
-				t[1] = prometheus.MustNewConstMetric(mBGPNeighborConnected, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP)
+				t[1] = prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, peer.State)
 			case "Active":
-				t[2] = prometheus.MustNewConstMetric(mBGPNeighborActive, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP)
+				t[2] = prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, peer.State)
 			case "Open sent":
-				t[3] = prometheus.MustNewConstMetric(mBGPNeighborOpenSent, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP)
+				t[3] = prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, peer.State)
 			case "Open confirm":
-				t[4] = prometheus.MustNewConstMetric(mBGPNeighborOpenConfirm, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP)
+				t[4] = prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, peer.State)
 			case "Established":
-				t[5] = prometheus.MustNewConstMetric(mBGPNeighborEstablished, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP)
+				t[5] = prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, peer.State)
 			}
 			m = append(m, t...)
 		}
@@ -211,38 +183,10 @@ func probeBGPNeighborsIPv6(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus
 		return probeBGPNeighborsIPv6Old(c, meta)
 	}
 
-	var (
-		mBGPNeighborIdle = prometheus.NewDesc(
-			"fortigate_bgp_neighbor_ipv6_idle_info",
+	var mBGPNeighborState = prometheus.NewDesc(
+			"fortigate_bgp_neighbor_ipv6_state",
 			"Configured bgp neighbor over ipv4 state",
-			[]string{"vdom", "remote_as", "admin_status", "local_ip", "neighbor_ip"}, nil,
-		)
-		mBGPNeighborConnected = prometheus.NewDesc(
-			"fortigate_bgp_neighbor_ipv6_connected_info",
-			"Configured bgp neighbor over ipv4 state",
-			[]string{"vdom", "remote_as", "admin_status", "local_ip", "neighbor_ip"}, nil,
-		)
-		mBGPNeighborActive = prometheus.NewDesc(
-			"fortigate_bgp_neighbor_ipv6_active_info",
-			"Configured bgp neighbor over ipv4 state",
-			[]string{"vdom", "remote_as", "admin_status", "local_ip", "neighbor_ip"}, nil,
-		)
-		mBGPNeighborOpenSent = prometheus.NewDesc(
-			"fortigate_bgp_neighbor_ipv6_open_sent_info",
-			"Configured bgp neighbor over ipv4 state",
-			[]string{"vdom", "remote_as", "admin_status", "local_ip", "neighbor_ip"}, nil,
-		)
-		mBGPNeighborOpenConfirm = prometheus.NewDesc(
-			"fortigate_bgp_neighbor_ipv6_open_confirm_info",
-			"Configured bgp neighbor over ipv4 state",
-			[]string{"vdom", "remote_as", "admin_status", "local_ip", "neighbor_ip"}, nil,
-		)
-		mBGPNeighborEstablished = prometheus.NewDesc(
-			"fortigate_bgp_neighbor_ipv6_established_info",
-			"Configured bgp neighbor over ipv4 state",
-			[]string{"vdom", "remote_as", "admin_status", "local_ip", "neighbor_ip"}, nil,
-		)
-	)
+			[]string{"vdom", "remote_as", "admin_status", "local_ip", "neighbor_ip", "state"}, nil,)
 
 	var rs []BGPNeighborResponse
 
@@ -256,26 +200,26 @@ func probeBGPNeighborsIPv6(c http.FortiHTTP, meta *TargetMetadata) ([]prometheus
 	for _, r := range rs {
 		for _, peer := range r.Results {
 			t := []prometheus.Metric{
-				prometheus.MustNewConstMetric(mBGPNeighborIdle, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP),
-				prometheus.MustNewConstMetric(mBGPNeighborConnected, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP),
-				prometheus.MustNewConstMetric(mBGPNeighborActive, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP),
-				prometheus.MustNewConstMetric(mBGPNeighborOpenSent, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP),
-				prometheus.MustNewConstMetric(mBGPNeighborOpenConfirm, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP),
-				prometheus.MustNewConstMetric(mBGPNeighborEstablished, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP),
+				prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, "Idle"),
+				prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, "Connect"),
+				prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, "Active"),
+				prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, "Open sent"),
+				prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, "Open confirm"),
+				prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 0.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, "Established"),
 			}
 			switch peer.State {
 			case "Idle":
-				t[0] = prometheus.MustNewConstMetric(mBGPNeighborIdle, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP)
+				t[0] = prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, peer.State)
 			case "Connect":
-				t[1] = prometheus.MustNewConstMetric(mBGPNeighborConnected, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP)
+				t[1] = prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, peer.State)
 			case "Active":
-				t[2] = prometheus.MustNewConstMetric(mBGPNeighborActive, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP)
+				t[2] = prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, peer.State)
 			case "Open sent":
-				t[3] = prometheus.MustNewConstMetric(mBGPNeighborOpenSent, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP)
+				t[3] = prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, peer.State)
 			case "Open confirm":
-				t[4] = prometheus.MustNewConstMetric(mBGPNeighborOpenConfirm, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP)
+				t[4] = prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, peer.State)
 			case "Established":
-				t[5] = prometheus.MustNewConstMetric(mBGPNeighborEstablished, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP)
+				t[5] = prometheus.MustNewConstMetric(mBGPNeighborState, prometheus.GaugeValue, 1.0, r.VDOM, peer.RemoteAS, strconv.FormatBool(peer.AdminStatus), peer.LocalIP, peer.NeighborIP, peer.State)
 			}
 			m = append(m, t...)
 		}

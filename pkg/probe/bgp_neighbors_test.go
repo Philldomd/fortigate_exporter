@@ -80,36 +80,26 @@ func TestBGPNeighborsIPv4(t *testing.T) {
 	}
 
 	em := `
-	# HELP fortigate_bgp_neighbor_ipv4_active_info Configured bgp neighbor over ipv4 state
-	# TYPE fortigate_bgp_neighbor_ipv4_active_info gauge
-	fortigate_bgp_neighbor_ipv4_active_info{admin_status="true",local_ip="10.0.0.0",neighbor_ip="10.0.0.1",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv4_active_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",vdom="root"} 1
-	fortigate_bgp_neighbor_ipv4_active_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",vdom="root"} 0
-	# HELP fortigate_bgp_neighbor_ipv4_connected_info Configured bgp neighbor over ipv4 state
-	# TYPE fortigate_bgp_neighbor_ipv4_connected_info gauge
-	fortigate_bgp_neighbor_ipv4_connected_info{admin_status="true",local_ip="10.0.0.0",neighbor_ip="10.0.0.1",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv4_connected_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv4_connected_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",vdom="root"} 0
-	# HELP fortigate_bgp_neighbor_ipv4_established_info Configured bgp neighbor over ipv4 state
-	# TYPE fortigate_bgp_neighbor_ipv4_established_info gauge
-	fortigate_bgp_neighbor_ipv4_established_info{admin_status="true",local_ip="10.0.0.0",neighbor_ip="10.0.0.1",remote_as="1337",vdom="root"} 1
-	fortigate_bgp_neighbor_ipv4_established_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv4_established_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",vdom="root"} 0
-	# HELP fortigate_bgp_neighbor_ipv4_idle_info Configured bgp neighbor over ipv4 state
-	# TYPE fortigate_bgp_neighbor_ipv4_idle_info gauge
-	fortigate_bgp_neighbor_ipv4_idle_info{admin_status="true",local_ip="10.0.0.0",neighbor_ip="10.0.0.1",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv4_idle_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv4_idle_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",vdom="root"} 0
-	# HELP fortigate_bgp_neighbor_ipv4_open_confirm_info Configured bgp neighbor over ipv4 state
-	# TYPE fortigate_bgp_neighbor_ipv4_open_confirm_info gauge
-	fortigate_bgp_neighbor_ipv4_open_confirm_info{admin_status="true",local_ip="10.0.0.0",neighbor_ip="10.0.0.1",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv4_open_confirm_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv4_open_confirm_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",vdom="root"} 0
-	# HELP fortigate_bgp_neighbor_ipv4_open_sent_info Configured bgp neighbor over ipv4 state
-	# TYPE fortigate_bgp_neighbor_ipv4_open_sent_info gauge
-	fortigate_bgp_neighbor_ipv4_open_sent_info{admin_status="true",local_ip="10.0.0.0",neighbor_ip="10.0.0.1",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv4_open_sent_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv4_open_sent_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",vdom="root"} 0
+	# HELP fortigate_bgp_neighbor_ipv4_state Configured bgp neighbor over ipv4 state
+	# TYPE fortigate_bgp_neighbor_ipv4_state gauge
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="10.0.0.0",neighbor_ip="10.0.0.1",remote_as="1337",state="Active",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="10.0.0.0",neighbor_ip="10.0.0.1",remote_as="1337",state="Connect",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="10.0.0.0",neighbor_ip="10.0.0.1",remote_as="1337",state="Established",vdom="root"} 1
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="10.0.0.0",neighbor_ip="10.0.0.1",remote_as="1337",state="Idle",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="10.0.0.0",neighbor_ip="10.0.0.1",remote_as="1337",state="Open confirm",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="10.0.0.0",neighbor_ip="10.0.0.1",remote_as="1337",state="Open sent",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",state="Active",vdom="root"} 1
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",state="Connect",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",state="Established",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",state="Idle",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",state="Open confirm",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",state="Open sent",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",state="Active",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",state="Connect",vdom="root"} 1
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",state="Established",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",state="Idle",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",state="Open confirm",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv4_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",state="Open sent",vdom="root"} 0
 	`
 
 	if err := testutil.GatherAndCompare(r, strings.NewReader(em)); err != nil {
@@ -130,36 +120,26 @@ func TestBGPNeighborsIPv6(t *testing.T) {
 	}
 
 	em := `
-	# HELP fortigate_bgp_neighbor_ipv6_active_info Configured bgp neighbor over ipv4 state
-	# TYPE fortigate_bgp_neighbor_ipv6_active_info gauge
-	fortigate_bgp_neighbor_ipv6_active_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::2",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv6_active_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv6_active_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",vdom="root"} 0
-	# HELP fortigate_bgp_neighbor_ipv6_connected_info Configured bgp neighbor over ipv4 state
-	# TYPE fortigate_bgp_neighbor_ipv6_connected_info gauge
-	fortigate_bgp_neighbor_ipv6_connected_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::2",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv6_connected_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv6_connected_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",vdom="root"} 0
-	# HELP fortigate_bgp_neighbor_ipv6_established_info Configured bgp neighbor over ipv4 state
-	# TYPE fortigate_bgp_neighbor_ipv6_established_info gauge
-	fortigate_bgp_neighbor_ipv6_established_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::2",remote_as="1337",vdom="root"} 1
-	fortigate_bgp_neighbor_ipv6_established_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv6_established_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",vdom="root"} 0
-	# HELP fortigate_bgp_neighbor_ipv6_idle_info Configured bgp neighbor over ipv4 state
-	# TYPE fortigate_bgp_neighbor_ipv6_idle_info gauge
-	fortigate_bgp_neighbor_ipv6_idle_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::2",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv6_idle_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv6_idle_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",vdom="root"} 0
-	# HELP fortigate_bgp_neighbor_ipv6_open_confirm_info Configured bgp neighbor over ipv4 state
-	# TYPE fortigate_bgp_neighbor_ipv6_open_confirm_info gauge
-	fortigate_bgp_neighbor_ipv6_open_confirm_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::2",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv6_open_confirm_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",vdom="root"} 1
-	fortigate_bgp_neighbor_ipv6_open_confirm_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",vdom="root"} 0
-	# HELP fortigate_bgp_neighbor_ipv6_open_sent_info Configured bgp neighbor over ipv4 state
-	# TYPE fortigate_bgp_neighbor_ipv6_open_sent_info gauge
-	fortigate_bgp_neighbor_ipv6_open_sent_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::2",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv6_open_sent_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",vdom="root"} 0
-	fortigate_bgp_neighbor_ipv6_open_sent_info{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",vdom="root"} 1
+	# HELP fortigate_bgp_neighbor_ipv6_state Configured bgp neighbor over ipv4 state
+	# TYPE fortigate_bgp_neighbor_ipv6_state gauge
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::2",remote_as="1337",state="Active",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::2",remote_as="1337",state="Connect",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::2",remote_as="1337",state="Established",vdom="root"} 1
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::2",remote_as="1337",state="Idle",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::2",remote_as="1337",state="Open confirm",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::2",remote_as="1337",state="Open sent",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",state="Active",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",state="Connect",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",state="Established",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",state="Idle",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",state="Open confirm",vdom="root"} 1
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::5",remote_as="1337",state="Open sent",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",state="Active",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",state="Connect",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",state="Established",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",state="Idle",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",state="Open confirm",vdom="root"} 0
+	fortigate_bgp_neighbor_ipv6_state{admin_status="true",local_ip="fd00::1",neighbor_ip="fd00::7",remote_as="1337",state="Open sent",vdom="root"} 1
 	`
 
 	if err := testutil.GatherAndCompare(r, strings.NewReader(em)); err != nil {
