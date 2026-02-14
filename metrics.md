@@ -53,7 +53,7 @@ Global:
    * `fortigate_last_snapshot_seconds`
  * _System/Sandbox_
    * `fortigate_sandbox_status_signature_count`
-   * `fortigate_sandbox_connection_status`
+   * `fortigate_sandbox_connection_state`
    * `fortigate_sandbox_stats_clean_total`
    * `fortigate_sandbox_stats_detected_total`
    * `fortigate_sandbox_stats_risk_high_total`

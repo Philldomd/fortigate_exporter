@@ -22,35 +22,10 @@ import (
 )
 
 func probeSystemSandboxConnection(c http.FortiHTTP, _ *TargetMetadata) ([]prometheus.Metric, bool) {
-	connectionStatusDisable := prometheus.NewDesc(
-		"fortigate_sandbox_connection_status_disabled",
+	connectionStatus := prometheus.NewDesc(
+		"fortigate_sandbox_connection_state",
 		"Sandbox connection status",
-		[]string{"sandbox_type"}, nil,
-	)
-	connectionStatusUreachable := prometheus.NewDesc(
-		"fortigate_sandbox_connection_status_unreachable",
-		"Sandbox connection status",
-		[]string{"sandbox_type"}, nil,
-	)
-	connectionStatusReachable := prometheus.NewDesc(
-		"fortigate_sandbox_connection_status_reachable",
-		"Sandbox connection status",
-		[]string{"sandbox_type"}, nil,
-	)
-	connectionStatusUnauthorized := prometheus.NewDesc(
-		"fortigate_sandbox_connection_status_unauthorized",
-		"Sandbox connection status",
-		[]string{"sandbox_type"}, nil,
-	)
-	connectionStatusIncompatible := prometheus.NewDesc(
-		"fortigate_sandbox_connection_status_incompatible",
-		"Sandbox connection status",
-		[]string{"sandbox_type"}, nil,
-	)
-	connectionStatusUnverified := prometheus.NewDesc(
-		"fortigate_sandbox_connection_status_unverified",
-		"Sandbox connection status",
-		[]string{"sandbox_type"}, nil,
+		[]string{"sandbox_type", "status"}, nil,
 	)
 
 	type SystemSandboxConnection struct {
@@ -69,50 +44,29 @@ func probeSystemSandboxConnection(c http.FortiHTTP, _ *TargetMetadata) ([]promet
 
 	m := []prometheus.Metric{}
 	for _, r := range res.Results {
+		t := []prometheus.Metric{
+			prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, 0, r.Type, "unreachable"),
+			prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, 0, r.Type, "reachable"),
+			prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, 0, r.Type, "disabled"),
+			prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, 0, r.Type, "unauthorized"),
+			prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, 0, r.Type, "incompatible"),
+			prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, 0, r.Type, "unverified"),
+		}
 		switch r.Status {
 		case "unreachable":
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUreachable, prometheus.GaugeValue, 1, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusReachable, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusDisable, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUnauthorized, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusIncompatible, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUnverified, prometheus.GaugeValue, 0, r.Type))
+			t[0] = prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, 1, r.Type, r.Status)
 		case "reachable":
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUreachable, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusReachable, prometheus.GaugeValue, 1, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusDisable, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUnauthorized, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusIncompatible, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUnverified, prometheus.GaugeValue, 0, r.Type))
+			t[1] = prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, 1, r.Type, r.Status)
 		case "disabled":
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUreachable, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusReachable, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusDisable, prometheus.GaugeValue, 1, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUnauthorized, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusIncompatible, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUnverified, prometheus.GaugeValue, 0, r.Type))
+			t[2] = prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, 1, r.Type, r.Status)
 		case "unauthorized":
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUreachable, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusReachable, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusDisable, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUnauthorized, prometheus.GaugeValue, 1, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusIncompatible, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUnverified, prometheus.GaugeValue, 0, r.Type))
+			t[3] = prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, 1, r.Type, r.Status)
 		case "incompatible":
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUreachable, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusReachable, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusDisable, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUnauthorized, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusIncompatible, prometheus.GaugeValue, 1, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUnverified, prometheus.GaugeValue, 0, r.Type))
+			t[4] = prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, 1, r.Type, r.Status)
 		case "unverified":
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUreachable, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusReachable, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusDisable, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUnauthorized, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusIncompatible, prometheus.GaugeValue, 0, r.Type))
-			m = append(m, prometheus.MustNewConstMetric(connectionStatusUnverified, prometheus.GaugeValue, 1, r.Type))
+			t[5] = prometheus.MustNewConstMetric(connectionStatus, prometheus.GaugeValue, 1, r.Type, r.Status)
 		}
+		m = append(m, t...)
 	}
 	return m, true
 }
